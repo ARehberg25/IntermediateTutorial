@@ -41,7 +41,7 @@ If all goes well your environment should be set up.
 
 ## Running the notebook
 
-Navigate to: https://jupyterhub.cedar.alliancecan.ca/user/fcormier/lab/workspaces/auto-b
+Navigate to: https://jupyterhub.cedar.computecanada.ca/
 Login via your compute canada username and password (and dual authentication!).
 When choosing your notebook, opt for 2 CPUs, 6300 Mb memory, and over 1 hour of time.
 
