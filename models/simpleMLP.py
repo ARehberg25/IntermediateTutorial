@@ -9,7 +9,7 @@ import torch.nn as nn
 class SimpleMLP(nn.Module):
     
     #Define the network layers here
-    def __init__(self,num_classes=3):
+    def __init__(self, num_classes=3):
         
         # Initialize the superclass
         super(SimpleMLP, self).__init__()
@@ -20,16 +20,18 @@ class SimpleMLP(nn.Module):
         
         
         # Fully-connected layers
-        self.fc1 = nn.Linear(24320, 9728)
-        self.fc2 = nn.Linear(9728, 4864)
-        self.fc3 = nn.Linear(4864, 1600)
-        self.fc4 = nn.Linear(1600, 400)
-        self.fc5 = nn.Linear(400, num_classes)
+        self.fc1 = nn.Linear(24320, 972)
+        self.fc2 = nn.Linear(972, 486)
+        self.fc3 = nn.Linear(486, 160)
+        self.fc4 = nn.Linear(160, 40)
+        self.fc5 = nn.Linear(40, num_classes)
         
     # Forward pass
     
     def forward(self, x):
         
+        #Put into the right shape
+        x=x.view(x.shape[0],-1)
         # Fully-connected layers
         x = self.relu(self.fc1(x))
         x = self.relu(self.fc2(x))
@@ -49,17 +51,18 @@ class SimpleMLPSEQ(nn.Module):
         super(SimpleMLPSEQ, self).__init__()
 
         self._sequence = nn.Sequential(
-            nn.Linear(24320, 9728),nn.ReLU(),
-            nn.Linear(9728, 4864),nn.ReLU(),      
-            nn.Linear(4864, 1600),nn.ReLU(),      
-            nn.Linear(1600, 400),nn.ReLU(),       
-            nn.Linear(400, num_classes))
+            nn.Linear(24320, 972),nn.ReLU(),
+            nn.Linear(972, 486),nn.ReLU(),      
+            nn.Linear(484, 160),nn.ReLU(),      
+            nn.Linear(160, 40),nn.ReLU(),       
+            nn.Linear(40, num_classes))
         
         
     # Forward pass
     
     def forward(self, x):
-        
+        #Put into the right shape
+        x=x.view(x.shape[0],-1)
         x=self._sequence(x)
         
         return x

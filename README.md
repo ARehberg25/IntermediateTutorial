@@ -1,35 +1,54 @@
 # Science Week Machine Learning hands-on session
 
 ## Introduction
-This repository holds the notebooks and code for the Machine Learning hands-on session at 2019 Science Week, Data Science and Quantum Computing Workshop on August 23rd. We will explore the application of Convolutional Neural Networks to the problem of particle identification in Water Cherenkov Detector.
+This repository holds the notebooks and code for the Machine Learning hands-on session at 2024 HK Canada Meeting, WatChMaL tutorial. We will explore the application of Convolutional Neural Networks to the problem of particle identification in Water Cherenkov Detector.
 Before proceeding please fork this repository by clicking on a button above in top right corner of the page.
 
 ## Acknowledgements
 I borrowed code liberally from [code and tutorials](https://github.com/WatChMaL) developed by [Kazu Terao](https://github.com/drinkingkazu) and code by [Julian Ding](https://github.com/search?q=user%3Ajulianzding) and [Abhishek Kajal](https://github.com/search?q=user%3Aabhishekabhishek). Big thanks also to the [Water Cherenkov Machine Learning](https://github.com/WatChMaL) collaboration for lending their data - particularly [Nick Prouse](https://github.com/nickwp) for actually running the simulations and to Julian for 'massaging' the data.
-Big Thanks to Amazon Web Services for providing the computing resources enabling us to run this session
+Thanks to Wojtek Fedorko for providing this code and for assistance.
 
+## Setting up on Cedar
 
-<a href="https://aws.amazon.com/what-is-cloud-computing"><img src="https://d0.awsstatic.com/logos/powered-by-aws.png" alt="Powered by AWS Cloud Computing"></a>
+This tutorial is meant to work on cedar, the compute canada cluster. If you don't have a compute canada account, I suggest pairing up with someone who does. Some instructions for a local version of this tutorial will follow this section. To login to Cedar:
 
+```
+ssh [username]@cedar.computecanada.ca
+```
 
-## Starting up on AWS instance
-Log into your instance. username for everybody is `ubuntu`:
+Navigate to the directory where you want to save the tutorial.
+
 ```
-ssh -Y -i <path/my_private_key> ubuntu@<aws_instance_assigned_to_me>
+mkdir -p ~/watchmal/tutorials/
+cd  ~/watchmal/tutorials/
 ```
-Then launch a screen/tmux session. Next clone your repository, set up pytorch environment and launch jupyter notebook server. Instructions on how to set up ssh tunnel and bring up the jupyter root screen will be printed on your terminal.
+
+Then either clone the git repo (as below), or fork your own and clone it.
+
 ```
-screen
-git clone <your forked repo url> Science_Week_ML_tutorial
-. anaconda3/bin/activate pytorch_p36
-cd Science_Week_ML_tutorial
-. find_this_ip
-./start_jupyternotebook.sh
+git clone https://github.com/felix-cormier/Science_Week_ML_tutorial.git
 ```
-If the instructions do not appear wait 10 seconds and then type:
+
+To setup environments (I suggest doing this a bit before the tutorial as it may take 15-20 minutes to load and install packages).
+
 ```
-python print_instructions.py
+cd Science_Week_ML_tutorial/
+env -i HOME=$HOME bash -l
+source env_setup.sh
 ```
+
+If all goes well your environment should be set up.
+
+## Running the notebook
+
+Navigate to: https://jupyterhub.cedar.alliancecan.ca/user/fcormier/lab/workspaces/auto-b
+Login via your compute canada username and password (and dual authentication!).
+When choosing your notebook, opt for 2 CPUs, 6300 Mb memory, and over 1 hour of time.
+
+It might take a few seconds to minutes for the job to launch.
+Once you are inside jupyterlab, navigate to your notebook (Data\_Exploration\_And\_Streaming.ipnyb first). On the top right, click on the Kernel that should say something like 'Python 3.10', and select the "Kernel HKCA Python 3.x Kernel".
+
+You are ready to navigate the notebook
 
 ## Notebook order in the tutorial
 The sequence of the tutorial is:
