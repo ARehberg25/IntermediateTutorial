@@ -37,7 +37,7 @@ class SimpleMLP(nn.Module):
         x = self.relu(self.fc2(x))
         x = self.relu(self.fc3(x))
         x = self.relu(self.fc4(x))
-        x = self.fc5(x)
+        x = self.softmax(self.fc5(x))
         
         return x
 
