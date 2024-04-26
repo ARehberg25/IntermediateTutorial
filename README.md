@@ -10,10 +10,10 @@ Thanks to Wojtek Fedorko for providing this code and for assistance.
 
 ## Setting up on Cedar
 
-This tutorial is meant to work on cedar, the compute canada cluster. If you don't have a compute canada account, I suggest pairing up with someone who does. Some instructions for a local version of this tutorial will follow this section. To login to Cedar:
+This tutorial is meant to work on narval, the compute canada cluster. If you don't have a compute canada account, I suggest pairing up with someone who does. Some instructions for a local version of this tutorial will follow this section. To login to Cedar:
 
 ```
-ssh [username]@cedar.computecanada.ca
+ssh [username]@narval.computecanada.ca
 ```
 
 Navigate to the directory where you want to save the tutorial.
@@ -41,7 +41,7 @@ If all goes well your environment should be set up.
 
 ## Running the notebook
 
-Navigate to: https://jupyterhub.cedar.computecanada.ca/
+Navigate to: https://jupyterhub.narval.computecanada.ca/
 Login via your compute canada username and password (and dual authentication!).
 When choosing your notebook, opt for 2 CPUs, 6300 Mb memory, and over 1 hour of time.
 
