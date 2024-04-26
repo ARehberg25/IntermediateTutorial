@@ -105,12 +105,14 @@ class Engine:
 
             
             linear_model_out = self.model(self.data)
+            #print(linear_model_out)
+            #print(self.model(self.data))
             # Training
             
             self.loss = self.criterion(linear_model_out,self.label)
             
             
-            softmax    = self.softmax(linear_model_out).detach().cpu().numpy()
+            softmax    = linear_model_out.detach().cpu().numpy()
             prediction = torch.argmax(linear_model_out,dim=-1)
             accuracy   = (prediction == self.label).sum().item() / float(prediction.nelement())        
             prediction = prediction.cpu().numpy()

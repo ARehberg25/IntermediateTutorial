@@ -5,6 +5,8 @@ Simple CNN based on Kazu Terao's and Abhishek Abhishek code .
 # PyTorch imports
 import torch.nn as nn
 
+import numpy as np
+
 # KazuNet class
 class SimpleCNN(nn.Module):
     
