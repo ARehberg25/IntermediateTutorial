@@ -1,4 +1,4 @@
-# Science Week Machine Learning hands-on session
+# HK Canada Machine Learning hands-on session
 
 ## Introduction
 This repository holds the notebooks and code for the Machine Learning hands-on session at 2024 HK Canada Meeting, WatChMaL tutorial. We will explore the application of Convolutional Neural Networks to the problem of particle identification in Water Cherenkov Detector.
