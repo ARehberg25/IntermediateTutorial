@@ -68,6 +68,5 @@ class SimpleCNN(nn.Module):
         x = self.relu(self.fc1(x))
         x = self.relu(self.fc2(x))
         x = self.fc3(x)
-        print(x)
         
         return x

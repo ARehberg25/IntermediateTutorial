@@ -33,7 +33,8 @@ class Engine:
         if (config.device == 'gpu'):
             print("Requesting a GPU")
             if torch.cuda.is_available():
-                self.device = torch.device("cuda")
+                self.device = torch.device(config.gpu_number)
+                print(f"DEVICE: {self.device}")
                 print("CUDA is available")
             else:
                 self.device=torch.device("cpu")
@@ -48,6 +49,7 @@ class Engine:
         self.optimizer = optim.SGD(self.model.parameters(), lr=config.lr)
         self.criterion = nn.CrossEntropyLoss()
         self.softmax = nn.Softmax(dim=1)
+        self.model.checkpoint = config.checkpoint
 
         #placeholders for data and labels
         self.data=None
@@ -172,8 +174,8 @@ class Engine:
                     
                     
                     self.model.train()
-
-                    self.save_state()
+                    if self.model.checkpoint:
+                        self.save_state()
                     mark_best=0
                     if res['loss']<best_val_loss:
                         best_val_loss=res['loss']

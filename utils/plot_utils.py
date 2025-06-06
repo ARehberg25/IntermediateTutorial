@@ -25,6 +25,74 @@ POS_MAP = [(8,4), #0
 
 PADDING = 1
 
+def event_displays(event, label, plot_path = 'plots/data_exploration/'):
+    """Generates event display 3 ways
+
+    Args:
+        event (_type_): PMT data from one event
+        label (_type_): class label for the event
+    """
+
+    # We are going to plot only the PMT charge for the 'center' PMT in mPMT modules - i believe this is at channel 18
+    fig, ax = plt.subplots(figsize=(16,8),facecolor='w')
+    plt.imshow(event[:,:,18],cmap='jet',origin='lower')
+    ax.set_title('Event Data, center PMT',fontsize=20,fontweight='bold')
+    print('class is {}'.format(label))
+    plt.savefig(plot_path+"/pmt_center_eventDisplay_charge.png")
+    plt.clf()
+
+    # We can also display the sum charge in the PMT
+
+    fig, ax = plt.subplots(figsize=(16,8),facecolor='w')
+    plt.imshow(np.sum(event[:,:,0:19],axis=-1),cmap='jet',origin='lower')
+    ax.set_title('Event Data, charge sum in mPMT',fontsize=20,fontweight='bold')
+    plt.savefig(plot_path+"/pmt_sum_eventDisplay_charge.png")
+    plt.clf()
+
+    # Let's plot this in a slightly nicer way - this is not 100% eact - we will put each PMT on a grid and display that
+
+
+
+    fig, ax = plt.subplots(figsize=(16,8),facecolor='w')
+    cmap = plt.cm.viridis
+    cmap.set_bad(color='black')
+    a=get_plot_array(event[:,:,0:19])
+#a = np.ma.masked_where(a < 0.05, a)
+    plt.imshow(a,
+           origin="upper",
+           cmap=cmap)
+           #norm=matplotlib.colors.LogNorm(vmax=np.amax(event),
+           #                               clip=True))
+    ax.set_title('Event Data, charge in mPMT',fontsize=20,fontweight='bold')
+    plt.savefig(plot_path+"/mpmt_eventDisplay_charge.png")
+    plt.clf()
+
+def plot_pmt_var(data, labels, colors, bins , xlabel = 'X', plot_path = 'plots/data_exploration/test_plot.png', do_log=False):
+    """Plots PMT data from min_idx to max_idx, divided into
+
+    Args:
+        data_to_plot_events (_type_): _description_
+        data_to_plot_labels (_type_): _description_
+        pmt_min_idx (int, optional): _description_. Defaults to 0.
+        pmt_max_idx (int, optional): _description_. Defaults to 19.
+    """
+    fig, ax = plt.subplots(figsize=(12,8),facecolor="w")
+
+    ax.tick_params(axis="both", labelsize=20)
+
+    values, bins, patches = ax.hist(data,
+                                bins=bins, 
+                                label= labels, color=colors, linestyle='--', linewidth=2,
+                                log=do_log,
+                                histtype='step')
+    ax.set_xlabel(xlabel,fontweight='bold',fontsize=24,color='black')
+
+    ax.legend(prop={'size': 16})
+
+    plt.savefig(plot_path)
+    plt.clf()
+
+
 def get_plot_array(event_data):
     
     # Assertions on the shape of the data and the number of input channels

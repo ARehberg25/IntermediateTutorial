@@ -8,47 +8,28 @@ Before proceeding please fork this repository by clicking on a button above in t
 I borrowed code liberally from [code and tutorials](https://github.com/WatChMaL) developed by [Kazu Terao](https://github.com/drinkingkazu) and code by [Julian Ding](https://github.com/search?q=user%3Ajulianzding) and [Abhishek Kajal](https://github.com/search?q=user%3Aabhishekabhishek). Big thanks also to the [Water Cherenkov Machine Learning](https://github.com/WatChMaL) collaboration for lending their data - particularly [Nick Prouse](https://github.com/nickwp) for actually running the simulations and to Julian for 'massaging' the data.
 Thanks to Wojtek Fedorko for providing this code and for assistance.
 
-## Setting up on Cedar
+## Setting up on triumf-ml1
 
-This tutorial is meant to work on narval, the compute canada cluster. If you don't have a compute canada account, I suggest pairing up with someone who does. Some instructions for a local version of this tutorial will follow this section. To login to Cedar:
 
-```
-ssh [username]@narval.computecanada.ca
-```
+ %% [markdown]
+ # Project overview and data visualization and streaming tutorial
+ 
 
-Navigate to the directory where you want to save the tutorial.
+ %% [markdown]
+ ## Project Overview
+ I will assume everybody here is roughly familiar with physics of neutrinos and Water Cherenkov detectors.
+ In this project we will tackle the task of classification of neutrino type ($\nu_e$ or $\nu_\mu$) or rather the charged leptons resulting from the nuclear scatter ($e$ and  $\mu$) as well as an irreducible background from neutral current $\gamma$ production. The dataset comes from simulated Water Cherenkov detector called NuPRISM. NuPRISM is a proposed 'intermediate' detector for the Hyper-Kamiokande project. The detector has a cylindrical geometry and can be lowered and raised in a shaft to sample different energy distribution of incoming neutrinos! ![NUPRISM](../img/NUPRISM_diag.png)
 
-```
-mkdir -p ~/watchmal/tutorials/
-cd  ~/watchmal/tutorials/
-```
+ %% [markdown]
+ The cylinder wall or 'barrel' and end-caps are lined with 'multi-PMT' or 'mPMT' modules arranged in a rectangular grid. Each mPMT is a dome with 19 PMTs arranged in two rings and one at the center:![mPMT](../img/mPMT.png)
 
-Then either clone the git repo (as below), or fork your own and clone it.
+ %% [markdown]
+ Here is an event display where the barrel was 'unrolled':
+ ![eventdisp](../img/ev_disp.png) - you can clearly see a Cherenkov ring appearing
+ The 'brightness' corresponds to charge collected by each PMT. Each PMT also tells us the arrival time of the signal.
 
-```
-git clone https://github.com/felix-cormier/Science_Week_ML_tutorial.git
-```
-
-To setup environments (I suggest doing this a bit before the tutorial as it may take 15-20 minutes to load and install packages).
-
-```
-cd Science_Week_ML_tutorial/
-env -i HOME=$HOME bash -l
-source env_setup.sh
-```
-
-If all goes well your environment should be set up.
-
-## Running the notebook
-
-Navigate to: https://jupyterhub.narval.computecanada.ca/
-Login via your compute canada username and password (and dual authentication!).
-When choosing your notebook, opt for 2 CPUs, 6300 Mb memory, and over 1 hour of time.
-
-It might take a few seconds to minutes for the job to launch.
-Once you are inside jupyterlab, navigate to your notebook (Data\_Exploration\_And\_Streaming.ipnyb first). On the top right, click on the Kernel that should say something like 'Python 3.10', and select the "Kernel HKCA Python 3.x Kernel".
-
-You are ready to navigate the notebook
+ %% [markdown]
+ In this part of the we will take a look at the data and how to organize streaming it in batches so that we can feed it to our neural model
 
 ## Notebook order in the tutorial
 The sequence of the tutorial is:
