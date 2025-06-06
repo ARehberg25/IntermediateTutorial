@@ -18,14 +18,14 @@ Thanks to Wojtek Fedorko for providing this code and for assistance.
  %% [markdown]
  ## Project Overview
  I will assume everybody here is roughly familiar with physics of neutrinos and Water Cherenkov detectors.
- In this project we will tackle the task of classification of neutrino type ($\nu_e$ or $\nu_\mu$) or rather the charged leptons resulting from the nuclear scatter ($e$ and  $\mu$) as well as an irreducible background from neutral current $\gamma$ production. The dataset comes from simulated Water Cherenkov detector called NuPRISM. NuPRISM is a proposed 'intermediate' detector for the Hyper-Kamiokande project. The detector has a cylindrical geometry and can be lowered and raised in a shaft to sample different energy distribution of incoming neutrinos! ![NUPRISM](../img/NUPRISM_diag.png)
+ In this project we will tackle the task of classification of neutrino type ($\nu_e$ or $\nu_\mu$) or rather the charged leptons resulting from the nuclear scatter ($e$ and  $\mu$) as well as an irreducible background from neutral current $\gamma$ production. The dataset comes from simulated Water Cherenkov detector called NuPRISM. NuPRISM is a proposed 'intermediate' detector for the Hyper-Kamiokande project. The detector has a cylindrical geometry and can be lowered and raised in a shaft to sample different energy distribution of incoming neutrinos! ![NUPRISM](img/NUPRISM_diag.png)
 
  %% [markdown]
- The cylinder wall or 'barrel' and end-caps are lined with 'multi-PMT' or 'mPMT' modules arranged in a rectangular grid. Each mPMT is a dome with 19 PMTs arranged in two rings and one at the center:![mPMT](../img/mPMT.png)
+ The cylinder wall or 'barrel' and end-caps are lined with 'multi-PMT' or 'mPMT' modules arranged in a rectangular grid. Each mPMT is a dome with 19 PMTs arranged in two rings and one at the center:![mPMT](img/mPMT.png)
 
  %% [markdown]
  Here is an event display where the barrel was 'unrolled':
- ![eventdisp](../img/ev_disp.png) - you can clearly see a Cherenkov ring appearing
+ ![eventdisp](img/ev_disp.png) - you can clearly see a Cherenkov ring appearing
  The 'brightness' corresponds to charge collected by each PMT. Each PMT also tells us the arrival time of the signal.
 
  %% [markdown]
