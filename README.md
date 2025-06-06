@@ -11,17 +11,23 @@ Thanks to Wojtek Fedorko for providing this code and for assistance.
 ## Setting up on triumf-ml1
 
 To access, from a terminal
-`ssh -Y username@triumf-ml1.phas.ubc.ca`
+```
+ssh -Y username@triumf-ml1.phas.ubc.ca
+```
 
 First time setup:
-`mkdir hk_ml_trisep_tutorial`
-`cd hk_ml_trisep_tutorial`
-`git clone https://github.com/felix-cormier/HK_ML_tutorial.git`
-`cd HK_ML_tutorial`
+```
+mkdir hk_ml_trisep_tutorial
+cd hk_ml_trisep_tutorial
+git clone https://github.com/felix-cormier/HK_ML_tutorial.git
+cd HK_ML_tutorial
+```
 
 Every time, you'll have to do
-`cd hk_ml_trisep_tutorial/HK_ML_tutorial`
-`source setup_environment.sh`
+```
+cd hk_ml_trisep_tutorial/HK_ML_tutorial
+source setup_environment.sh
+```
 
 
 
@@ -30,13 +36,16 @@ Every time, you'll have to do
  
 
  ## Project Overview
- I will assume everybody here is roughly familiar with physics of neutrinos and Water Cherenkov detectors.
- In this project we will tackle the task of classification of neutrino type ($\nu_e$ or $\nu_\mu$) or rather the charged leptons resulting from the nuclear scatter ($e$ and  $\mu$) as well as an irreducible background from neutral current $\gamma$ production. The dataset comes from simulated Water Cherenkov detector called NuPRISM. NuPRISM is a proposed 'intermediate' detector for the Hyper-Kamiokande project. The detector has a cylindrical geometry and can be lowered and raised in a shaft to sample different energy distribution of incoming neutrinos! ![NUPRISM](img/NUPRISM_diag.png)
+ When going through a water detector, such as Super Kamiokande, neutrinos have a small chance to interact with a water molecule. This will often (but not always!) produce the neutrino's corresponding lepton.
+ Due to the Cherenkov effect, the lepton will produce a ring of light, which can be used for both classification and regression.
+ In this project we will tackle the task of classification of neutrino type ($\nu_e$ or $\nu_\mu$) or rather the charged leptons resulting from the nuclear scatter ($e$ and  $\mu$) as well as an irreducible background from neutral current $\gamma$ production. The dataset comes from simulated Water Cherenkov detector originally called NuPRISM, now called the Intermediate Water Cherenkov Detector (IWCD), which is part of the complex Hyper Kamiokande Detector currently under construction in Japan. The detector has a cylindrical geometry and can be lowered and raised in a shaft to sample different energy distribution of incoming neutrinos! ![NUPRISM](img/NUPRISM_diag.png)
 
  The cylinder wall or 'barrel' and end-caps are lined with 'multi-PMT' or 'mPMT' modules arranged in a rectangular grid. Each mPMT is a dome with 19 PMTs arranged in two rings and one at the center:![mPMT](img/mPMT.png)
 
  Here is an event display where the barrel was 'unrolled':
- ![eventdisp](img/ev_disp.png) - you can clearly see a Cherenkov ring appearing
+ ![eventdisp](img/ev_disp.png) 
+ 
+ You can clearly see a Cherenkov ring appearing
  The 'brightness' corresponds to charge collected by each PMT. Each PMT also tells us the arrival time of the signal.
 
  In this part of the we will take a look at the data and how to organize streaming it in batches so that we can feed it to our neural model
