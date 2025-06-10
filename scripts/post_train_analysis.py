@@ -1,122 +1,79 @@
-# %% [markdown]
 # # In this tutorial we'll see what to watch for during and after the network training
 
-# %% [markdown]
 # ## Monitoring training health
 
-# %% [markdown]
 # First let's look at at the training history - we want to display the training set loss and vlidation set loss as a function of 'iteration' or the batch number seen by our model
 
-# %%
 import os,sys
 currentdir = os.getcwd()
 parentdir = os.path.dirname(currentdir)
 sys.path.insert(0,parentdir) 
 
-# %%
+import numpy as np
+
 from utils import plot_utils
 
-# %%
-%matplotlib inline
+from utils.data_handling import WCH5Dataset
+from utils.data_utils import rotate_chan
+from utils.engine import Engine
 
-# %% [markdown]
+from models.simpleCNN import SimpleCNN
+from models.resnet import resnet18, resnet34, resnet50, resnet101, resnet152
+
 # You will need to change the location of where these files are
 
 # %%
-loc="../model_state_dumps/20240425_141704/"
+loc="model_state_dumps/20250606_141919/"
 
 # %%
-plot_utils.disp_learn_hist(loc)
+plot_utils.disp_learn_hist(loc, show=False, losslim=1)
 
 
-# %% [markdown]
 # Why so bumpy?
 #    - there is 'noise' associated with batch-to-batch variation BUT
 #    - The main effect is actually the real bumpiness in the loss landscape being traversed during learning
 #    
 # To learn anything we need to smooth out the plot - for instance by using moving average
 
-# %%
 plot_utils.disp_learn_hist_smoothed(loc,window_train=200,window_val=1)
 
-# %% [markdown]
-# This actually looks pretty good - we get initially a very quick learning and then a plateau. Both training and validation loss is still decreasing slightly and tracking - which means we could probably kept on training
+# This actually looks pretty good - we get initially a very quick learning and then a plateau. 
+# Both training and validation loss is still decreasing slightly and tracking - which means we could probably kept on training
 
-# %% [markdown]
-# Let's run training on a small sample to illustrate overtraining
 
-# %%
-from models.simpleCNN import SimpleCNN
-model_CNN=SimpleCNN(num_input_channels=38,num_classes=3)
+# ## Evaluating model performance in classification task
 
-# %%
-from utils.data_handling import WCH5Dataset
+# Now let's go back to the full dataset and load the model trained last time on the full dataset
 
-# %%
-import numpy as np
-def rotate_chan(x):
-    return np.transpose(x,(2,0,1))
-
-# %%
-dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",reduced_dataset_size=10000,val_split=0.1,test_split=0.1,transform=rotate_chan)
-
-# %%
 class CONFIG:
     pass
 config=CONFIG()
-config.batch_size_test = 1024
-config.batch_size_train = 32
+config.batch_size_test =512
+config.batch_size_train = 256
 config.batch_size_val = 512
 config.lr=0.01
 config.device = 'gpu'
-config.gpu_list = [0]
-config.dump_path = '../model_state_dumps'
-config.num_workers_train=3
-config.num_workers_val=2
-config.num_workers_test=2
+config.gpu_number=5
+config.num_workers_train=6
+config.num_workers_val=1
+config.num_workers_test=1
+config.checkpoint=False
+config.dump_path = 'model_state_dumps'
 
-# %%
-from utils.engine import Engine
-
-# %%
-engine=Engine(model_CNN,dset,config)
-
-# %%
-engine.train(epochs=20,report_interval=10,valid_interval=10)
-
-# %%
-loc="../model_state_dumps/20190823_091320"
-plot_utils.disp_learn_hist_smoothed(loc,window_train=20,window_val=20)
-
-# %% [markdown]
-# Now this clearly shows overtraining - validation loss starts to climb. Possibly other pathologies
-
-# %% [markdown]
-# ## Evaluating model performance in classification task
-
-# %% [markdown]
-# Now let's go back to the full dataset and load the model trained last time on the full dataset
-
-# %%
 dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1,transform=rotate_chan)
 
-# %%
-!ls ../model_state_dumps/20190823_072324
+model_resnet=resnet152(num_input_channels=38,num_classes=3)
+engine=Engine(model_resnet,dset,config)
+
 
 # %%
-engine=Engine(model_CNN,dset,config)
+engine.restore_state("model_state_dumps/20250606_141919/ResNetBEST.pth")
 
-# %%
-engine.restore_state("../model_state_dumps/20190823_072324/SimpleCNNBEST.pth")
+engine.dirpath="model_state_dumps/20250606_141919/"
 
-# %%
-engine.dirpath="../model_state_dumps/20190823_072324"
+#engine.validate()
 
-# %%
-engine.validate()
-
-# %% [markdown]
-# ### Examination of classifier output
+# %% [markdown]# ### Examination of classifier output
 
 # %% [markdown]
 # Plot the classifier softmax output for various classes and outputs
@@ -125,6 +82,8 @@ engine.validate()
 labels_val=np.load(engine.dirpath + "labels.npy")
 predictions_val=np.load(engine.dirpath + "predictions.npy")
 softmax_out_val=np.load(engine.dirpath + "softmax.npy")
+
+print(softmax_out_val)
 
 # %%
 from matplotlib import pyplot as plt
@@ -162,7 +121,8 @@ def plot_resp(labels,softmax_out):
     
     
     
-    plt.show()
+    plt.savefig("plots/analysis/test.png")
+    plt.clf()
 
 # %%
 plot_resp(labels_val,softmax_out_val)
@@ -171,7 +131,7 @@ plot_resp(labels_val,softmax_out_val)
 # ### The confusion matrix
 
 # %%
-plot_utils.plot_confusion_matrix(labels_val, predictions_val, ['$\gamma$','$e$','$\mu$'])
+plot_utils.plot_confusion_matrix(labels_val, predictions_val, ['$\gamma$','$e$','$\mu$'],output_path = 'plots/analysis/confusion_matrix.png')
 
 # %% [markdown]
 # ### Receiver Operating Characteristic
@@ -197,28 +157,24 @@ fig2, ax2 = plt.subplots(figsize=(12,8),facecolor="w")
 ax2.tick_params(axis="both", labelsize=20)
 plt.yscale('log')
 plt.ylim(1.0,1.0e3)
-plt.grid(b=True, which='major', color='gray', linestyle='-')
-plt.grid(b=True, which='minor', color='gray', linestyle='--')
+#plt.grid(b=True, which='major', color='gray', linestyle='-')
+#plt.grid(b=True, which='minor', color='gray', linestyle='--')
 ax2.plot(tpr, rejection, label=r'$e$ VS $\gamma$ ROC, AUC={:.3f}'.format(roc_AUC))
 ax2.set_xlabel('efficiency',fontweight='bold',fontsize=24,color='black')
 ax2.set_ylabel('Rejection',fontweight='bold',fontsize=24,color='black')
 ax2.legend(loc="upper right",prop={'size': 16})
 
+plt.savefig("plots/analysis/roc_rej.png")
+
 fig2, ax2 = plt.subplots(figsize=(12,8),facecolor="w")
 ax2.tick_params(axis="both", labelsize=20)
 #plt.yscale('log')
 #plt.ylim(1.0,1)
-plt.grid(b=True, which='major', color='gray', linestyle='-')
-plt.grid(b=True, which='minor', color='gray', linestyle='--')
+#plt.grid(b=True, which='major', color='gray', linestyle='-')
+#plt.grid(b=True, which='minor', color='gray', linestyle='--')
 ax2.plot(tpr, tpr/np.sqrt(fpr), label=r'$e$ VS $\gamma$ ROC, AUC={:.3f}'.format(roc_AUC))
 ax2.set_xlabel('efficiency',fontweight='bold',fontsize=24,color='black')
 ax2.set_ylabel('~significance gain',fontweight='bold',fontsize=24,color='black')
 ax2.legend(loc="upper right",prop={'size': 16})
 
-plt.show()
-
-
-# %%
-
-
-
+plt.savefig("plots/analysis/roc_sig.png")

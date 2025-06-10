@@ -3,6 +3,7 @@ import numpy as np
 import os, time
 import h5py
 import sys
+import argparse
 
 from utils.data_handling import WCH5Dataset
 from utils.plot_utils import get_plot_array, event_displays, plot_pmt_var
@@ -10,16 +11,30 @@ from utils.plot_utils import get_plot_array, event_displays, plot_pmt_var
 import matplotlib
 import matplotlib.pyplot as plt
 
+parser = argparse.ArgumentParser()
+parser.add_argument("-s", "--skip_tutorial", help="Run with this option first to get a tutorial style script",
+                    action="store_true")
+args = parser.parse_args()
+if args.skip_tutorial:
+    print("Skipping tutorial style")
+
+filepath = "/fast_scratch/TRISEP_data/NUPRISM.h5"
 
 try:
-    f=h5py.File("/fast_scratch/TRISEP_data/NUPRISM.h5","r")
+    f=h5py.File(filepath,"r")
 except FileNotFoundError:
     print("File not Found!")
     quit()
 
 # `keys()` will give us all the hdf5 datasets stored in the file
 
+
+print(f"Opened {filepath}")
 print(f"Keys in the data: {f.keys()}")
+
+if not args.skip_tutorial:
+
+    input("Press Enter to continue...")  # Waits for user input
 
 # Let's look at the shapes of the data:
 

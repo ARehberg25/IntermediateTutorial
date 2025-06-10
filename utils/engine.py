@@ -114,7 +114,7 @@ class Engine:
             self.loss = self.criterion(linear_model_out,self.label)
             
             
-            softmax    = linear_model_out.detach().cpu().numpy()
+            softmax    = self.softmax(linear_model_out)
             prediction = torch.argmax(linear_model_out,dim=-1)
             accuracy   = (prediction == self.label).sum().item() / float(prediction.nelement())        
             prediction = prediction.cpu().numpy()
@@ -277,7 +277,7 @@ class Engine:
                 # Add the local result to the final result
                 labels.extend(self.label)
                 predictions.extend(result['prediction'])
-                softmaxes.extend(result["softmax"])
+                softmaxes.extend(result["softmax"].detach().cpu().numpy())
                 
                 val_iterations += 1
                 

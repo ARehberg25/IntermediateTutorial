@@ -1,8 +1,8 @@
-# HK Canada Machine Learning hands-on session
+# Hyper Kamiokande TRISEP Machine Learning hands-on session
 
 ## Introduction
-This repository holds the notebooks and code for the Machine Learning hands-on session at 2024 HK Canada Meeting, WatChMaL tutorial. We will explore the application of Convolutional Neural Networks to the problem of particle identification in Water Cherenkov Detector.
-Before proceeding please fork this repository by clicking on a button above in top right corner of the page.
+This repository holds the scripts and classes for the Machine Learning hands-on session at 2025 TRISEP Summer School. We will explore the application of Convolutional Neural Networks to the problem of particle identification in Water Cherenkov Detector.
+It is advisable to fork this repository by clicking on a button above in top right corner of the page before proceeding.
 
 ## Acknowledgements
 I borrowed code liberally from [code and tutorials](https://github.com/WatChMaL) developed by [Kazu Terao](https://github.com/drinkingkazu) and code by [Julian Ding](https://github.com/search?q=user%3Ajulianzding) and [Abhishek Kajal](https://github.com/search?q=user%3Aabhishekabhishek). Big thanks also to the [Water Cherenkov Machine Learning](https://github.com/WatChMaL) collaboration for lending their data - particularly [Nick Prouse](https://github.com/nickwp) for actually running the simulations and to Julian for 'massaging' the data.
@@ -15,15 +15,15 @@ To access, from a terminal
 ssh -Y username@triumf-ml1.phas.ubc.ca
 ```
 
-First time setup:
+First time setup, if you forked fill out your GitHub username as [your-username], if not you can use felix-cormier as the username instead:
 ```
 mkdir hk_ml_trisep_tutorial
 cd hk_ml_trisep_tutorial
-git clone https://github.com/felix-cormier/HK_ML_tutorial.git
+git clone https://github.com/[your-username]/HK_ML_tutorial.git
 cd HK_ML_tutorial
 ```
 
-Every time, you'll have to do
+Every time, once you login, and if you've used the same directory names as above, you'll have to do
 ```
 cd hk_ml_trisep_tutorial/HK_ML_tutorial
 source setup_environment.sh
@@ -48,12 +48,22 @@ source setup_environment.sh
  You can clearly see a Cherenkov ring appearing
  The 'brightness' corresponds to charge collected by each PMT. Each PMT also tells us the arrival time of the signal.
 
- In this part of the we will take a look at the data and how to organize streaming it in batches so that we can feed it to our neural model
 
 ## Notebook order in the tutorial
 The sequence of the tutorial is:
-  1. `Data_Exploration_And_Streaming.ipynb`
-  1. `MLP_CNN.ipynb`
-  1. `Training diagnostics and performance metrics.ipynb`
-The notebook `Training monitor.ipynb` is meant to display some live diagnostics during network training process and can be run anytime in parallel.
+  1. Data Exploration and Streaming
+  1. Training with different architectures
+  1. Monitoring training and analyzing outputs
+  
+### Data Exploration and Streaming
+
+The first script we will run will be in the _scripts_ directory, called _data\_exploration.py_.
+From your repo directory you can run 
+```
+python scripts/data_exploration.py
+```
+
+This will run this script tutorial-style, going through different lines print lines.
+
+First, we will open the ([.h5 file](https://github.com/username/repo/blob/branch/path/to/file.py#L10))
 

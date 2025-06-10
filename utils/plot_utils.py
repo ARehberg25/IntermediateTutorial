@@ -161,7 +161,7 @@ def disp_learn_hist(location,losslim=None,show=True):
     # added these four lines
     lines  = line11 + line12 + line21 + line22
     labels = [l.get_label() for l in lines]
-    leg    = ax2.legend(lines, labels, fontsize=16, loc=5, numpoints=1)
+    leg    = ax2.legend(lines, labels, fontsize=16, loc='best', numpoints=1)
     leg_frame = leg.get_frame()
     leg_frame.set_facecolor('white')
 
@@ -170,6 +170,8 @@ def disp_learn_hist(location,losslim=None,show=True):
         plt.show()
         return
     
+    plt.savefig("plots/training/test.png")
+
     return fig
     
 def disp_learn_hist_smoothed(location, losslim=None, window_train=400,window_val=40,show=True):
@@ -246,7 +248,7 @@ def moving_average(a, n=3) :
 
 
 # Function to plot a confusion matrix
-def plot_confusion_matrix(labels, predictions, class_names):
+def plot_confusion_matrix(labels, predictions, class_names, output_path = 'plots/analysis/confusion_matrix.png'):
     
     """
     plot_confusion_matrix(labels, predictions, class_names)
@@ -295,6 +297,6 @@ def plot_confusion_matrix(labels, predictions, class_names):
     fig.tight_layout()
     plt.title("Confusion matrix", fontsize=20) 
    
-    plt.show()
+    plt.savefig(output_path)
 
 

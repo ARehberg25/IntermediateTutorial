@@ -10,6 +10,7 @@ sys.path.insert(0,parentdir)
 
 from utils.data_handling import WCH5Dataset
 from utils.engine import Engine
+from utils.data_utils import rotate_chan
 
 from models.simpleCNN import SimpleCNN
 
@@ -31,9 +32,7 @@ config.dump_path = 'model_state_dumps'
 
 model_CNN=SimpleCNN(num_input_channels=38,num_classes=3)
 
-import numpy as np
-def rotate_chan(x):
-    return np.transpose(x,(2,0,1))
+
 
 dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1,transform=rotate_chan)
 
