@@ -29,25 +29,24 @@ except FileNotFoundError:
 # `keys()` will give us all the hdf5 datasets stored in the file
 
 
-print(f"Opened {filepath}")
-print(f"Keys in the data: {f.keys()}")
 
 if not args.skip_tutorial:
 
+    print(f"Opened {filepath}")
+    print(f"Keys in the data: {f.keys()}")
     input("Press Enter to continue...")  # Waits for user input
 
 # Let's look at the shapes of the data:
 
-print(f"Number of events: {f['labels'].shape}")
-
 if not args.skip_tutorial:
 
+    print(f"Number of events: {f['labels'].shape}")
     input("Press Enter to continue...")  # Waits for user input
 
-print(f"Shape of the barrel-only data: {f['event_data'].shape}")
 
 if not args.skip_tutorial:
 
+    print(f"Shape of the barrel-only data: {f['event_data'].shape}")
     input("Press Enter to continue...")  # Waits for user input
 
 # We have 900k simulated scattering events here! labels are 0, 1, 2 for $\gamma$,$e$ and $\mu$ respectively. 
@@ -64,26 +63,26 @@ if not args.skip_tutorial:
 
 #  In fact the object is not a numpy array -it is a hdf5 `Dataset` object - the data itself lives on disk until we request it
 
-print(f"The data type is: {type(f['event_data'])}")
 
 if not args.skip_tutorial:
 
+    print(f"The data type is: {type(f['event_data'])}")
     input("Press Enter to continue...")  # Waits for user input
 
 # The size of the dataset will make it difficult to load all at once into memory on many systems
 
-print("Size of the bulk of the data is {:.1f} GB".format( (f['event_data'].size * 4 / (1024**3)) ))
 
 if not args.skip_tutorial:
 
+    print("Size of the bulk of the data is {:.1f} GB".format( (f['event_data'].size * 4 / (1024**3)) ))
     input("Press Enter to continue...")  # Waits for user input
 
 # One important feature of the dataset it is uncompressed and contiguous or 'unchunked':
 
-print("dataset chunks: {} compression: {}".format(f['event_data'].chunks,f['event_data'].compression))
 
 if not args.skip_tutorial:
 
+    print("dataset chunks: {} compression: {}".format(f['event_data'].chunks,f['event_data'].compression))
     input("Press Enter to continue...")  # Waits for user input
 
 # The dataset has been prepared as contiguous and uncompressed so that we are not obliged to load it all in memory but we can access it very fast. 
@@ -169,22 +168,27 @@ sys.path.insert(0,parentdir)
 # Ok let's instantiate the dataset and ask it for a few examples:
 
 dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1)
-
-
 print(f"Length of dataset object: {len(dset)}")
+
+if not args.skip_tutorial:
+
+    input("Press Enter to continue...")  # Waits for user input
 
 
 # Let's get some random event and label from the training dataset:
-
 event, label, energy=dset[dset.train_indices[1984]]
-
 print("Label {} and energy: {} (MeV) ".format(label,energy))
-
 #Make some event displays, save them to disk
 event_displays(event, label, plot_path='plots/data_exploration/')
 
+if not args.skip_tutorial:
+
+    input("Press Enter to continue...")  # Waits for user input
+
 # Always try to learn as much as possible about the dataset before throwing ML at it. Let's quickly histogram the charges. 
 # We won't load the full dataset but taking few thousand should be fine (since we have 12k PMTs)
+
+print("Plotting charge information")
 
 data_to_plot=dset[dset.train_indices[0:2000]]
 
@@ -206,14 +210,18 @@ charge_colors_to_plot = ['blue', 'red', 'green']
 
 charge_bins=np.linspace(0.0,20.0,51)
 
-
-
+#Using plotting functions
 plot_pmt_var(charge_data_to_plot, charge_labels_to_plot, charge_colors_to_plot, bins = charge_bins, xlabel = 'PMT Energy (photo electrons)', plot_path='plots/data_exploration/all_mpmt_charge.png', do_log=True)
+
+if not args.skip_tutorial:
+
+    input("Press Enter to continue...")  # Waits for user input
 
 # Now plot the time histogram -notice anything strange?
 # Hint charge is indices 0-19 (one for each mPMT), then time is the indices after that...
 
 
+print("Plotting energy information")
 
 # Let's also plot the total energy in the event and also the true particle energy
 
