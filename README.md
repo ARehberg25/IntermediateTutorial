@@ -78,3 +78,15 @@ Next, we'll look at the number of events. We [print out the shape of the 'labels
 print(f"Number of events: {f['labels'].shape}")
 ```
 
+Next, investigate the shape of the PMT variables, which is the detector variables we will eventually use to train our networks. We [print out the shape of the 'event_data' variable](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L47)
+
+
+```python
+print(f"Shape of the barrel-only data: {f['event_data'].shape}")
+```
+
+We have 900k simulated scattering events here! labels are 0, 1, 2 for $\gamma$,$e$ and $\mu$ respectively. 
+The 'event_data' contains only the barrel portion of the tank which has been 'unrolled'. 
+The first dimension (900k) enumerates over the events, the second two dimensions (16,40) enumerate over the row and column in the module 'grid'. 
+Finally last two dimensions enumerate over the PMT within the module (again there are 19 in each mPMT module) 
+Note: the first 19 entries correspond to charge collected on a given PMT and last 19 correspond to the time.

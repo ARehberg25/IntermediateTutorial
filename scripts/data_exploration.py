@@ -66,13 +66,25 @@ if not args.skip_tutorial:
 
 print(f"The data type is: {type(f['event_data'])}")
 
+if not args.skip_tutorial:
+
+    input("Press Enter to continue...")  # Waits for user input
+
 # The size of the dataset will make it difficult to load all at once into memory on many systems
 
 print("Size of the bulk of the data is {:.1f} GB".format( (f['event_data'].size * 4 / (1024**3)) ))
 
+if not args.skip_tutorial:
+
+    input("Press Enter to continue...")  # Waits for user input
+
 # One important feature of the dataset it is uncompressed and contiguous or 'unchunked':
 
 print("dataset chunks: {} compression: {}".format(f['event_data'].chunks,f['event_data'].compression))
+
+if not args.skip_tutorial:
+
+    input("Press Enter to continue...")  # Waits for user input
 
 # The dataset has been prepared as contiguous and uncompressed so that we are not obliged to load it all in memory but we can access it very fast. 
 # BUT it will take more spave on disk. In the next section we will see an example of how to deal with datasets with these sizes.
