@@ -65,5 +65,5 @@ python scripts/data_exploration.py
 
 This will run this script tutorial-style, going through different lines print lines.
 
-First, we will open the ([.h5 file](https://github.com/username/repo/blob/branch/path/to/file.py#L10))
+First, we will open the ([.h5 file](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L24))
 
