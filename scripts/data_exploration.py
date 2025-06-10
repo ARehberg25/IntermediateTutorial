@@ -40,7 +40,15 @@ if not args.skip_tutorial:
 
 print(f"Number of events: {f['labels'].shape}")
 
+if not args.skip_tutorial:
+
+    input("Press Enter to continue...")  # Waits for user input
+
 print(f"Shape of the barrel-only data: {f['event_data'].shape}")
+
+if not args.skip_tutorial:
+
+    input("Press Enter to continue...")  # Waits for user input
 
 # We have 900k simulated scattering events here! labels are 0, 1, 2 for $\gamma$,$e$ and $\mu$ respectively. 
 # The 'event_data' contains only the barrel portion of the tank which has been 'unrolled'. 
