@@ -26,7 +26,6 @@ from torchviz import make_dot
 
 
 
-# # Building your first fully connected network and a CNN 
 
 # ## Building a simple fully connected network (a Multi-Layer Perceptron)
 
@@ -39,20 +38,13 @@ from torchviz import make_dot
 #   - Sequential Module  
 
 parser = argparse.ArgumentParser()
-group = parser.add_mutually_exclusive_group()
-group.add_argument("-f", "--first_tutorial", help="Run with this option first to get a tutorial style script",
-                    action="store_true")
-group.add_argument("-t", "--just_train", help="Run with this option just to train the MLP",
+parser.add_argument("-s", "--skip_tutorial", help="Run with this option just to train the MLP",
                     action="store_true")
 args = parser.parse_args()
-if args.first_tutorial:
-    print("Running tutorial style")
-if args.just_train:
+if args.skip_tutorial:
     print("Running just the MLP training")
-else:
-    print("Needs command line arguments, run python mlp_training.py --help")
 
-if args.first_tutorial:
+if not args.skip_tutorial:
 
     model_MLP=SimpleMLP(num_classes=3)
 
@@ -77,21 +69,16 @@ if args.first_tutorial:
 
     model_MLPSEQ=SimpleMLPSEQ(num_classes=3)
 
-    # %%
     for name, param in model_MLPSEQ.named_parameters():
         print("name of a parameter: {}, type: {}, parameter requires a gradient?: {}".
             format(name, type(param),param.requires_grad))
 
-    # %%
     print(model_MLPSEQ.state_dict())
 
-    # %% [markdown]
     # As we can see the parameters look similar but have different names
 
-    # %% [markdown]
     # ## Training a model
 
-    # %% [markdown]
     # First let's make a dataset object
 
     # %%
@@ -103,10 +90,8 @@ if args.first_tutorial:
 
     dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",reduced_dataset_size=100000,val_split=0.1,test_split=0.1)
 
-    # %% [markdown]
     # Let's make a dataloader and grab a first batch
 
-    # %%
 
     train_dldr=DataLoader(dset,
                         batch_size=32,
@@ -122,7 +107,6 @@ if args.first_tutorial:
     # Now compute the model output on the data
 
     model_out=model_MLP(data)
-    make_dot(model_out, params=dict(list(model_MLP.named_parameters()))).render("diagrams/mlp_torchviz", format="png")
 
 
 
@@ -141,8 +125,9 @@ if args.first_tutorial:
 
     print(loss_tensor)
 
-    # This was a 'forward pass'. We should now have a computational graph available - let's plot it for the kicks...
+    # This was a 'forward pass'. We should now have a computational graph available - let's plot it for kicks...
 
+    make_dot(model_out, params=dict(list(model_MLP.named_parameters()))).render("diagrams/mlp_torchviz", format="png")
 
     # Before we calculate the gradients - let's check what they are now...
 
@@ -200,7 +185,7 @@ if args.first_tutorial:
 
 # Let's first create a configuration object -we'll use this to set up our training engine
 
-if args.just_train:
+else:
 
     model_MLP=SimpleMLP(num_classes=3)
 

@@ -85,12 +85,12 @@ Next, investigate the shape of the PMT variables, which is the detector variable
 print(f"Shape of the barrel-only data: {f['event_data'].shape}")
 ```
 
-We have 900k simulated scattering events here! labels are 0, 1, 2 for $\gamma$,$e$ and $\mu$ respectively. 
+We have 900k simulated scattering events here! labels are 0, 1, 2 for $\gamma$,electrons and muons respectively. 
 The 'event_data' contains only the barrel portion of the tank which has been 'unrolled'. 
 The first dimension (900k) enumerates over the events, the second two dimensions (16,40) enumerate over the row and column in the module 'grid'. 
 Finally last two dimensions enumerate over the PMT within the module (again there are 19 in each mPMT module) 
-Note: the first 19 entries correspond to charge collected on a given:w
- PMT and last 19 correspond to the time.
+Note: the first 19 entries correspond to charge collected on a given
+ mPMT and last 19 correspond to the time.
 
 
 We can now take a look at some details about our data.
@@ -122,8 +122,8 @@ BUT it will take more spave on disk. In the next section we will see an example 
 
 #### Using Pytorch Dataset object
 
-Let's import and create a Dataset object - you are welcome to look at the [source](utils/data_handling.py)
-We've added a more detailed walk-through of data handling in the comments of [data_exploration](scripts/data_exploration.py) that you can read at your leisure. Since this tutorial is more about networks than data handling, we leave it as optional.
+Let's import and create a Dataset object - you are welcome to look at the [source](utils/data_handling.py) code in _utils/data\_handling.py_.
+We've added a more detailed walk-through of data handling in the [comments](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L102-164) of [data_exploration](scripts/data_exploration.py) that you can read at your leisure. Since this tutorial is more about networks than data handling, we leave it as optional.
 
 The [data handling](utils/data_handling.py) utility has a class named _WCH5Dataset_ that we now [instantiate](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L170-171), it should have the same length as the file we were looking at earlier
 ```python
@@ -152,7 +152,7 @@ We'll [prepare the dataset](https://github.com/felix-cormier/HK_ML_tutorial/blob
 plot_pmt_var(charge_data_to_plot, charge_labels_to_plot, charge_colors_to_plot, bins = charge_bins, xlabel = 'PMT Energy (photo electrons)', plot_path='plots/data_exploration/all_mpmt_charge.png', do_log=True)
 ```
 
-Can you do the same for time variables, rather than charge? You can work directly in the script (and use option _-s_ to skip tutorial mode). Hint: charge is indices 0-19 (one for each mPMT), then time is the indices after that...
+**Can you do the same for time variables, rather than charge?** You can work directly in the script (and use option _-s_ to skip tutorial mode). Hint: charge is indices 0-19 (one for each mPMT), then time is the indices after that...
 
 Let's also plot the total energy in the event and also the true particle energy. Again we'll [prepare the dataset](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L228-237), then finally use a plotting function (plot_pmt_var)[https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L239]
 
@@ -161,4 +161,52 @@ plot_pmt_var(sum_charge_data_to_plot, sum_charge_labels_to_plot, sum_charge_colo
 ```
 Muons seem to look very different - but is that expected?
 
-This is the end of the data exploration script. Are there other plots you could make? Either event-level or PMT-level? You can work by running the script with the _-s_ option to skip the tutorial step-by-step instructions.
+This is the end of the data exploration script. **Are there other plots you could make? Either event-level or PMT-level?** You can work by running the script with the _-s_ option to skip the tutorial step-by-step instructions.
+
+### Data Iteration
+
+This is a short script to walk you through how to use PyTorch DataLoader objects to iterate through the data. It is not necessary for the rest of the tutorial, but might be good practice if you wanted to try your hand at any pre-processing while running training scripts.
+
+To the run the script do
+```
+python scripts/data_iteration.py
+```
+
+Here we load DataLoader from PyTorch
+
+```python
+from torch.utils.data import DataLoader
+```
+
+then [define train, validation and testing DataLoaders from our dataset](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_iteration.py#L73-75)
+
+```python
+train_iter=DataLoader(dset,batch_size=64,shuffle=False,sampler=SubsetRandomSampler(dset.train_indices),num_workers=2)
+val_iter=DataLoader(dset,batch_size=64,shuffle=False,sampler=SubsetRandomSampler(dset.val_indices),num_workers=2)
+test_iter=DataLoader(dset,batch_size=64,shuffle=False,sampler=SubsetRandomSampler(dset.test_indices),num_workers=2)
+```
+
+You see the parameters - like batch_size and sampler - the sampler uses the indices we computed for the training, validation and testing set - if you use a sampler shuffle has to be False. On each iteration the DataLoader object will ask the dataset for a bunch of indices (calling the __getitem__ function we coded earlier) and then collate the data into a batch tensor. The collating can also be customized by providing collate_fn - but for now we will leave it with a default behavior. Did you notice the `num_workers` argument? if >0 this will enable multiprocessing - several processes will be reading examples (if supplied applying the augmentation transformation) and putting the data on queue that would be than 'consumed' by your training/evaluation process.Your 'instance' has 2 CPUs for the job so we will use that. We are beating on the same storage with all threads - so if we aren't doing much preprocessing it doesn't make sense to make this too high.
+
+Now convince yourself that the `data` and `labels` are already tensors - which we could plug into our future model - [let's iterate over first 40 batches:](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_iteration.py#L95-96)
+
+```python
+num_iterations=40
+trecord = loop_over_set(train_iter, num_iterations)
+```
+
+This calls the _loop\_over\_set.py_ function defined at the top of _data\_iteration.py_. This loop is technically all we would need to train, as we load a batch of training data from memory, we could train over it.
+
+By the way, do you notice that roughly every 2nd iteration the time it takes to give a batch is huge? Why?
+
+
+What if we want to pre-process the data? We can do that directly in the loop over the train iterator
+**Can you modify loop_over_set function so that time is centered around 0 with a standard deviation of 1?**
+Input data being arounds this range can help converge faster.
+**Can you make plots using some of the plotting utitilies in data_exploration showing the difference in time?**
+**Are there any other pre-processing steps you could think of to do with our data?**
+
+
+### Training
+
+First we'll look at a Multi-Layer Perceptron (MLP). An MLP is a very basic neutral network, with a set of fully-connected layers connecting input (PMT information) to output (class prediction).

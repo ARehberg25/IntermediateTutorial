@@ -31,8 +31,8 @@ config.dump_path = 'model_state_dumps'
 
 dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1,transform=rotate_chan)
 
-model_resnet=resnet152(num_input_channels=38,num_classes=3)
-engine=Engine(model_resnet,dset,config)
+model_resnet=#What comes here?
+engine=#What comes here?
 
 for name, param in model_resnet.named_parameters():
     print("name of a parameter: {}, type: {}, parameter requires a gradient?: {}".
