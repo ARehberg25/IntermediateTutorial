@@ -69,3 +69,11 @@ First, we will open the ([.h5 file](https://github.com/felix-cormier/HK_ML_tutor
 ```python
     f=h5py.File(filepath,"r")
 ```
+.h5 files are very performant when reading from disk, and so are widely used in ML.
+The code will open the file and print out the different keys, which are variables labelled with a name.
+
+Next, we'll look at the number of events. We ([print out the shape of the 'labels' variable](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L41))
+
+```python
+print(f"Number of events: {f['labels'].shape}")
+```
