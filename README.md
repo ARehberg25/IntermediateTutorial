@@ -51,7 +51,7 @@ In general we would suggest using the VSCode IDE over ssh to go through this tut
  The 'brightness' corresponds to charge collected by each PMT. Each PMT also tells us the arrival time of the signal.
 
 
-## Notebook order in the tutorial
+## Order of the tutorial
 The sequence of the tutorial is:
   1. [Data Exploration and Iteration](tutorial/exploration_iteration.md)
   2. [Training Multi-Layer Perceptrons](tutorial/training.md)
