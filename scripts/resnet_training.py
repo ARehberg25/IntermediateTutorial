@@ -39,4 +39,4 @@ for name, param in model_resnet.named_parameters():
           format(name, type(param),param.requires_grad))
 
 # Train
-engine.train(epochs=5,report_interval=100,valid_interval=200)
+engine.train(epochs=1,report_interval=100,valid_interval=200)

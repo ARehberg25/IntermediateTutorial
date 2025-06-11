@@ -253,7 +253,7 @@ def moving_average(a, n=3) :
 
 
 # Function to plot a confusion matrix
-def plot_confusion_matrix(labels, predictions, class_names, output_path = 'plots/analysis/confusion_matrix.png'):
+def plot_confusion_matrix(labels, predictions, class_names, output_name = 'plots/analysis/confusion_matrix.png'):
     
     """
     plot_confusion_matrix(labels, predictions, class_names)
@@ -302,7 +302,7 @@ def plot_confusion_matrix(labels, predictions, class_names, output_path = 'plots
     fig.tight_layout()
     plt.title("Confusion matrix", fontsize=20) 
    
-    plt.savefig(output_path)
+    plt.savefig(output_name)
     plt.clf()
 
 def plot_resp(labels,softmax_out,output_name="plots/analysis/softmax.png"):
@@ -351,7 +351,7 @@ def plot_roc_curves(labels_val, softmax_out_val, output_path = 'plots/analysis/'
     roc_AUC=auc(fpr,tpr)
     fig1, ax1 = plt.subplots(figsize=(12,8),facecolor="w")
     ax1.tick_params(axis="both", labelsize=20)
-    ax1.plot(fpr,tpr,label=r'$e$ VS $\gamma$ ROC, AUC={:.3f}'.format(roc_AUC))
+    ax1.plot(fpr,tpr,label=r'e VS gamma ROC, AUC={:.3f}'.format(roc_AUC))
     ax1.set_xlabel('FPR',fontweight='bold',fontsize=24,color='black')
     ax1.set_ylabel('TPR',fontweight='bold',fontsize=24,color='black')
     ax1.legend(loc="lower right",prop={'size': 16})
@@ -364,12 +364,12 @@ def plot_roc_curves(labels_val, softmax_out_val, output_path = 'plots/analysis/'
     plt.ylim(1.0,1.0e3)
     #plt.grid(b=True, which='major', color='gray', linestyle='-')
     #plt.grid(b=True, which='minor', color='gray', linestyle='--')
-    ax2.plot(tpr, rejection, label=r'$e$ VS $\gamma$ ROC, AUC={:.3f}'.format(roc_AUC))
+    ax2.plot(tpr, rejection, label=r'e VS gamma ROC, AUC={:.3f}'.format(roc_AUC))
     ax2.set_xlabel('efficiency',fontweight='bold',fontsize=24,color='black')
     ax2.set_ylabel('Rejection',fontweight='bold',fontsize=24,color='black')
     ax2.legend(loc="upper right",prop={'size': 16})
 
-    plt.savefig(output_path+"/roc_rej.png")
+    plt.savefig(output_path+"roc_rej.png")
     plt.clf()
 
     fig2, ax2 = plt.subplots(figsize=(12,8),facecolor="w")
@@ -378,11 +378,11 @@ def plot_roc_curves(labels_val, softmax_out_val, output_path = 'plots/analysis/'
     #plt.ylim(1.0,1)
     #plt.grid(b=True, which='major', color='gray', linestyle='-')
     #plt.grid(b=True, which='minor', color='gray', linestyle='--')
-    ax2.plot(tpr, tpr/np.sqrt(fpr), label=r'$e$ VS $\gamma$ ROC, AUC={:.3f}'.format(roc_AUC))
+    ax2.plot(tpr, tpr/np.sqrt(fpr), label=r'e VS gamma ROC, AUC={:.3f}'.format(roc_AUC))
     ax2.set_xlabel('efficiency',fontweight='bold',fontsize=24,color='black')
     ax2.set_ylabel('~significance gain',fontweight='bold',fontsize=24,color='black')
     ax2.legend(loc="upper right",prop={'size': 16})
 
-    plt.savefig(output_path+"/roc_sig.png")
+    plt.savefig(output_path+"roc_sig.png")
     plt.clf()
 

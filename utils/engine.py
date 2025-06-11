@@ -29,7 +29,7 @@ class Engine:
     Performs training and evaluation
     """
 
-    def __init__(self, model, dataset, config):
+    def __init__(self, model, dataset, config, eval_only=False):
         self.model = model
         if (config.device == 'gpu'):
             print("Requesting a GPU")
@@ -85,14 +85,16 @@ class Engine:
         try:
             os.stat(self.dirpath)
         except:
-            print("Creating a directory for run dump: {}".format(self.dirpath))
-            os.makedirs(self.dirpath,exist_ok=True)
+            if not eval_only:
+                print("Creating a directory for run dump: {}".format(self.dirpath))
+                os.makedirs(self.dirpath,exist_ok=True)
 
         self.config=config
         
         # Save a copy of the config in the dump path
-        f_config=open(self.dirpath+"/config_log.txt","w")
-        f_config.write(str(vars(config)))
+        if not eval_only:
+            f_config=open(self.dirpath+"/config_log.txt","w")
+            f_config.write(str(vars(config)))
 
 
     def forward(self,train=True):

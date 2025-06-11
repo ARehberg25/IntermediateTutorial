@@ -88,5 +88,3 @@ class WCH5Dataset(Dataset):
             return self.reduced_size
 
 
-    def __del__(self):
-        self.f.close()
