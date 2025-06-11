@@ -1,4 +1,4 @@
-### Data Exploration and Iteration
+## Data Exploration and Iteration
 
 The first script we will run will be in the _scripts_ directory, called _data\_exploration.py_.
 From your repo directory you can run 
@@ -63,7 +63,7 @@ print("dataset chunks: {} compression: {}".format(f['event_data'].chunks,f['even
 The dataset has been prepared as contiguous and uncompressed so that we are not obliged to load it all in memory but we can access it very fast. 
 BUT it will take more spave on disk. In the next section we will see an example of how to deal with datasets with these sizes.
 
-#### Using Pytorch Dataset object
+### Using Pytorch Dataset object
 
 Let's import and create a Dataset object - you are welcome to look at the [source](utils/data_handling.py) code in _utils/data\_handling.py_.
 We've added a more detailed walk-through of data handling in the [comments](../scripts/data_exploration.py#L102-164) of [data_exploration](scripts/data_exploration.py) that you can read at your leisure. Since this tutorial is more about networks than data handling, we leave it as optional.
@@ -84,7 +84,7 @@ event_displays(event, label, plot_path='plots/data_exploration/')
 
 The default place to store the plots you made are in _plots/data\_exploration_, so you can check them there. There should be 3 different event display plots, do you understand what they all show?
 
-#### Making plots of your data
+### Making plots of your data
 
 Always try to learn as much as possible about the dataset before throwing ML at it. Let's quickly histogram the charges. 
 We won't load the full dataset but taking few thousand should be fine (since we have 12k PMTs).
@@ -106,7 +106,7 @@ Muons seem to look very different - but is that expected?
 
 This is the end of the data exploration script. **Are there other plots you could make? Either event-level or PMT-level?** You can work by running the script with the _-s_ option to skip the tutorial step-by-step instructions.
 
-### Data Iteration
+## Data Iteration
 
 This is a short script to walk you through how to use PyTorch DataLoader objects to iterate through the data. It is not necessary for the rest of the tutorial, but might be good practice if you wanted to try your hand at any pre-processing while running training scripts.
 

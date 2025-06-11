@@ -1,7 +1,7 @@
 # Hyper Kamiokande TRISEP Machine Learning hands-on session
 
 ## Introduction
-This repository holds the scripts and classes for the Machine Learning hands-on session at 2025 TRISEP Summer School. We will explore the application of Convolutional Neural Networks to the problem of particle identification in Water Cherenkov Detector.
+This repository holds the scripts and classes for the Hyper Kamiokande Machine Learning hands-on session at 2025 TRISEP Summer School. We will explore the application of different Neural Networks to the problem of particle identification in Water Cherenkov Detector.
 It is advisable to fork this repository by clicking on a button above in top right corner of the page before proceeding.
 
 ## Acknowledgements
@@ -31,10 +31,10 @@ cd hk_ml_trisep_tutorial/HK_ML_tutorial
 source setup_environment.sh
 ```
 
-In general we would suggest using the VSCode IDE over ssh to go through this tutorial. It also makes it much easier to view plots that you make.
+In general we would suggest using e.g. [VSCode IDE](https://code.visualstudio.com) over ssh to go through this tutorial. It also makes it much easier to view plots that you make.
 
 
- # Project overview and data visualization and streaming tutorial
+ # Overview and tutorial order
  
 
  ## Project Overview
