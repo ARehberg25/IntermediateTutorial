@@ -7,7 +7,7 @@
 ########################################################
 
 # Necessary for Compute Canada systems
-unset XDG_RUNTIME_DIR
+#unset XDG_RUNTIME_DIR
 
 thishost=localhost
 stdbuf -oL jupyter-notebook --no-browser --ip=$thishost --notebook-dir=$PWD >& jupyter_logbook.txt &

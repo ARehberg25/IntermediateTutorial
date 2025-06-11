@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from sklearn.metrics import roc_curve, auc
+from sklearn.preprocessing import label_binarize
+
 POS_MAP = [(8,4), #0
            (7,2), #1
            (6,0), #2
@@ -24,6 +27,74 @@ POS_MAP = [(8,4), #0
            (4,4)] #18
 
 PADDING = 1
+
+def event_displays(event, label, plot_path = 'plots/data_exploration/'):
+    """Generates event display 3 ways
+
+    Args:
+        event (_type_): PMT data from one event
+        label (_type_): class label for the event
+    """
+
+    # We are going to plot only the PMT charge for the 'center' PMT in mPMT modules - i believe this is at channel 18
+    fig, ax = plt.subplots(figsize=(16,8),facecolor='w')
+    plt.imshow(event[:,:,18],cmap='jet',origin='lower')
+    ax.set_title('Event Data, center PMT',fontsize=20,fontweight='bold')
+    print('class is {}'.format(label))
+    plt.savefig(plot_path+"/pmt_center_eventDisplay_charge.png")
+    plt.clf()
+
+    # We can also display the sum charge in the PMT
+
+    fig, ax = plt.subplots(figsize=(16,8),facecolor='w')
+    plt.imshow(np.sum(event[:,:,0:19],axis=-1),cmap='jet',origin='lower')
+    ax.set_title('Event Data, charge sum in mPMT',fontsize=20,fontweight='bold')
+    plt.savefig(plot_path+"/pmt_sum_eventDisplay_charge.png")
+    plt.clf()
+
+    # Let's plot this in a slightly nicer way - this is not 100% eact - we will put each PMT on a grid and display that
+
+
+
+    fig, ax = plt.subplots(figsize=(16,8),facecolor='w')
+    cmap = plt.cm.viridis
+    cmap.set_bad(color='black')
+    a=get_plot_array(event[:,:,0:19])
+#a = np.ma.masked_where(a < 0.05, a)
+    plt.imshow(a,
+           origin="upper",
+           cmap=cmap)
+           #norm=matplotlib.colors.LogNorm(vmax=np.amax(event),
+           #                               clip=True))
+    ax.set_title('Event Data, charge in mPMT',fontsize=20,fontweight='bold')
+    plt.savefig(plot_path+"/mpmt_eventDisplay_charge.png")
+    plt.clf()
+
+def plot_pmt_var(data, labels, colors, bins , xlabel = 'X', plot_path = 'plots/data_exploration/test_plot.png', do_log=False):
+    """Plots PMT data from min_idx to max_idx, divided into
+
+    Args:
+        data_to_plot_events (_type_): _description_
+        data_to_plot_labels (_type_): _description_
+        pmt_min_idx (int, optional): _description_. Defaults to 0.
+        pmt_max_idx (int, optional): _description_. Defaults to 19.
+    """
+    fig, ax = plt.subplots(figsize=(12,8),facecolor="w")
+
+    ax.tick_params(axis="both", labelsize=20)
+
+    values, bins, patches = ax.hist(data,
+                                bins=bins, 
+                                label= labels, color=colors, linestyle='--', linewidth=2,
+                                log=do_log,
+                                histtype='step')
+    ax.set_xlabel(xlabel,fontweight='bold',fontsize=24,color='black')
+
+    ax.legend(prop={'size': 16})
+
+    plt.savefig(plot_path)
+    plt.clf()
+
 
 def get_plot_array(event_data):
     
@@ -63,7 +134,7 @@ def tile(canvas, ul, pmts):
             
 
 
-def disp_learn_hist(location,losslim=None,show=True):
+def disp_learn_hist(location,losslim=None,show=True, output_name="plots/training/training_log.png"):
     train_log=location+'/log_train.csv'
     val_log=location+'/log_val.csv'
 
@@ -93,7 +164,7 @@ def disp_learn_hist(location,losslim=None,show=True):
     # added these four lines
     lines  = line11 + line12 + line21 + line22
     labels = [l.get_label() for l in lines]
-    leg    = ax2.legend(lines, labels, fontsize=16, loc=5, numpoints=1)
+    leg    = ax2.legend(lines, labels, fontsize=16, loc='best', numpoints=1)
     leg_frame = leg.get_frame()
     leg_frame.set_facecolor('white')
 
@@ -102,9 +173,11 @@ def disp_learn_hist(location,losslim=None,show=True):
         plt.show()
         return
     
+    plt.savefig(output_name)
+
     return fig
     
-def disp_learn_hist_smoothed(location, losslim=None, window_train=400,window_val=40,show=True):
+def disp_learn_hist_smoothed(location, losslim=None, window_train=400,window_val=40,show=False, output_name="plots/training/training_log_smoothed.png"):
     train_log=location+'/log_train.csv'
     val_log=location+'/log_val.csv'
     
@@ -168,6 +241,8 @@ def disp_learn_hist_smoothed(location, losslim=None, window_train=400,window_val
         plt.show()
         return
 
+    plt.savefig(output_name)
+
     return fig
 
 
@@ -178,7 +253,7 @@ def moving_average(a, n=3) :
 
 
 # Function to plot a confusion matrix
-def plot_confusion_matrix(labels, predictions, class_names):
+def plot_confusion_matrix(labels, predictions, class_names, output_path = 'plots/analysis/confusion_matrix.png'):
     
     """
     plot_confusion_matrix(labels, predictions, class_names)
@@ -227,6 +302,87 @@ def plot_confusion_matrix(labels, predictions, class_names):
     fig.tight_layout()
     plt.title("Confusion matrix", fontsize=20) 
    
-    plt.show()
+    plt.savefig(output_path)
+    plt.clf()
 
+def plot_resp(labels,softmax_out,output_name="plots/analysis/softmax.png"):
+
+    fig1, ax1 = plt.subplots(figsize=(12,8),facecolor="w")
+    ax1.tick_params(axis="both", labelsize=20)
+    softmax_out_val_gamma_Pe=softmax_out[labels==0][:,1]
+    softmax_out_val_e_Pe=softmax_out[labels==1][:,1]
+    
+    bins=np.linspace(0.0,1.0,51)
+    values, bins, patches = ax1.hist(softmax_out_val_gamma_Pe, bins=bins, 
+                                    label= 'gamma', color='blue', density=True,
+                                    alpha=0.3)
+    
+    values, bins, patches = ax1.hist(softmax_out_val_e_Pe, bins=bins, 
+                                    label= 'electron', color='red', density=True,
+                                    alpha=0.3)
+    ax1.legend(prop={'size': 16})
+    ax1.set_xlabel('$P(e)$',fontweight='bold',fontsize=24,color='black')
+    
+    fig2, ax2 = plt.subplots(figsize=(12,8),facecolor="w")
+    ax2.tick_params(axis="both", labelsize=20)
+    softmax_out_val_e_Pmu=softmax_out[labels==1][:,2]
+    softmax_out_val_mu_Pmu=softmax_out[labels==2][:,2]
+    
+    values, bins, patches = ax2.hist(softmax_out_val_mu_Pmu, bins=bins, 
+                                    label= 'muon', color='green', density=True,
+                                    alpha=0.3)
+    
+    values, bins, patches = ax2.hist(softmax_out_val_e_Pmu, bins=bins, 
+                                    label= 'electron', color='red', density=True,
+                                    alpha=0.3, log=True)
+    ax2.legend(prop={'size': 16})
+    ax2.set_xlabel('$P(\mu)$',fontweight='bold',fontsize=24,color='black')
+    
+    
+    
+    plt.savefig(output_name)
+    plt.clf()
+
+
+def plot_roc_curves(labels_val, softmax_out_val, output_path = 'plots/analysis/'):
+    labels_val_e_gamma=labels_val[np.where( (labels_val==0) | (labels_val==1))]
+    softmax_out_val_e_gamma=softmax_out_val[np.where( (labels_val==0) | (labels_val==1))][:,1]
+    fpr,tpr,thr=roc_curve(labels_val_e_gamma,softmax_out_val_e_gamma)
+    roc_AUC=auc(fpr,tpr)
+    fig1, ax1 = plt.subplots(figsize=(12,8),facecolor="w")
+    ax1.tick_params(axis="both", labelsize=20)
+    ax1.plot(fpr,tpr,label=r'$e$ VS $\gamma$ ROC, AUC={:.3f}'.format(roc_AUC))
+    ax1.set_xlabel('FPR',fontweight='bold',fontsize=24,color='black')
+    ax1.set_ylabel('TPR',fontweight='bold',fontsize=24,color='black')
+    ax1.legend(loc="lower right",prop={'size': 16})
+
+    rejection=1.0/(fpr+1e-10)
+
+    fig2, ax2 = plt.subplots(figsize=(12,8),facecolor="w")
+    ax2.tick_params(axis="both", labelsize=20)
+    plt.yscale('log')
+    plt.ylim(1.0,1.0e3)
+    #plt.grid(b=True, which='major', color='gray', linestyle='-')
+    #plt.grid(b=True, which='minor', color='gray', linestyle='--')
+    ax2.plot(tpr, rejection, label=r'$e$ VS $\gamma$ ROC, AUC={:.3f}'.format(roc_AUC))
+    ax2.set_xlabel('efficiency',fontweight='bold',fontsize=24,color='black')
+    ax2.set_ylabel('Rejection',fontweight='bold',fontsize=24,color='black')
+    ax2.legend(loc="upper right",prop={'size': 16})
+
+    plt.savefig(output_path+"/roc_rej.png")
+    plt.clf()
+
+    fig2, ax2 = plt.subplots(figsize=(12,8),facecolor="w")
+    ax2.tick_params(axis="both", labelsize=20)
+    #plt.yscale('log')
+    #plt.ylim(1.0,1)
+    #plt.grid(b=True, which='major', color='gray', linestyle='-')
+    #plt.grid(b=True, which='minor', color='gray', linestyle='--')
+    ax2.plot(tpr, tpr/np.sqrt(fpr), label=r'$e$ VS $\gamma$ ROC, AUC={:.3f}'.format(roc_AUC))
+    ax2.set_xlabel('efficiency',fontweight='bold',fontsize=24,color='black')
+    ax2.set_ylabel('~significance gain',fontweight='bold',fontsize=24,color='black')
+    ax2.legend(loc="upper right",prop={'size': 16})
+
+    plt.savefig(output_path+"/roc_sig.png")
+    plt.clf()
 

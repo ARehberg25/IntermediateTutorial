@@ -13,6 +13,7 @@ import os
 import sys
 import time
 import numpy as np
+from tqdm import tqdm
 
 from utils.data_handling import WCH5Dataset
 
@@ -33,7 +34,8 @@ class Engine:
         if (config.device == 'gpu'):
             print("Requesting a GPU")
             if torch.cuda.is_available():
-                self.device = torch.device("cuda")
+                self.device = torch.device(config.gpu_number)
+                print(f"DEVICE: {self.device}")
                 print("CUDA is available")
             else:
                 self.device=torch.device("cpu")
@@ -48,6 +50,7 @@ class Engine:
         self.optimizer = optim.SGD(self.model.parameters(), lr=config.lr)
         self.criterion = nn.CrossEntropyLoss()
         self.softmax = nn.Softmax(dim=1)
+        self.model.checkpoint = config.checkpoint
 
         #placeholders for data and labels
         self.data=None
@@ -112,7 +115,7 @@ class Engine:
             self.loss = self.criterion(linear_model_out,self.label)
             
             
-            softmax    = linear_model_out.detach().cpu().numpy()
+            softmax    = self.softmax(linear_model_out)
             prediction = torch.argmax(linear_model_out,dim=-1)
             accuracy   = (prediction == self.label).sum().item() / float(prediction.nelement())        
             prediction = prediction.cpu().numpy()
@@ -172,8 +175,8 @@ class Engine:
                     
                     
                     self.model.train()
-
-                    self.save_state()
+                    if self.model.checkpoint:
+                        self.save_state()
                     mark_best=0
                     if res['loss']<best_val_loss:
                         best_val_loss=res['loss']
@@ -255,9 +258,9 @@ class Engine:
             loss, accuracy, labels, predictions, softmaxes= [],[],[],[],[]
             
             # Extract the event data and label from the DataLoader iterator
-            for it, val_data in enumerate(self.val_dldr):
+            for it, val_data in tqdm(enumerate(self.val_dldr)):
                 
-                sys.stdout.write("val_iterations : " + str(val_iterations) + "\n")
+                #sys.stdout.write("val_iterations : " + str(val_iterations) + "\n")
                 
                 self.data, self.label = val_data[0:2]
                 
@@ -275,7 +278,7 @@ class Engine:
                 # Add the local result to the final result
                 labels.extend(self.label)
                 predictions.extend(result['prediction'])
-                softmaxes.extend(result["softmax"])
+                softmaxes.extend(result["softmax"].detach().cpu().numpy())
                 
                 val_iterations += 1
                 
