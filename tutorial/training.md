@@ -3,7 +3,7 @@
 First we'll look at a Multi-Layer Perceptron (MLP). An MLP is a very basic neutral network, with a set of fully-connected layers connecting input (PMT information) to output (class prediction).
 We'll use the script _scripts/mlp\_training.py_ to do this. By running this script and following along here, we'll manually go through training through one batch of our input data.
 
-This script load the class [SimpleMLP](models/simpleMLP.py), which I encourage you to peruse. [We load this class](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/mlp_training.py#L49)
+This script load the class [SimpleMLP](models/simpleMLP.py), which I encourage you to peruse. [We load this class](../scripts/mlp_training.py#L49)
 
 ```python
 model_MLP=SimpleMLP(num_classes=3)
@@ -25,7 +25,7 @@ Let's quickly look at the [source](https://pytorch.org/docs/stable/_modules/torc
 
 The parameters descend from the `Tensor` class. When `Parameter` object is instantiated as a member of a `Module` object class the parameter is added to `Module`s list of parameters automatically. 
 
-This list and values are captured in the 'state dictionary' of a module, which is essentially all the weights and biases of the model. This can just be [accessed by](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/mlp_training.py#L67):
+This list and values are captured in the 'state dictionary' of a module, which is essentially all the weights and biases of the model. This can just be [accessed by](../scripts/mlp_training.py#L67):
 ```python
 model_MLP.state_dict()
 ```
@@ -37,7 +37,7 @@ Did you notice that the values are not 0? This is actually by design - by defaul
 
 
 
-Let's [load a dataset using our WCH5Dataset class, and use a dataloader](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/mlp_training.py#L96-103)
+Let's [load a dataset using our WCH5Dataset class, and use a dataloader](../scripts/mlp_training.py#L96-103)
 ```python
     dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",reduced_dataset_size=100000,val_split=0.1,test_split=0.1)
 
@@ -49,7 +49,7 @@ Let's [load a dataset using our WCH5Dataset class, and use a dataloader](https:/
     train_iter=iter(train_dldr)
 ```
 
-Then we can [grab the data and labels from the 1st batch of the iterator we just made](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/mlp_training.py#L104-113):
+Then we can [grab the data and labels from the 1st batch of the iterator we just made](../scripts/mlp_training.py#L104-113):
 ```python
 #Set up iterator over training set
 train_iter=iter(train_dldr)
@@ -64,7 +64,7 @@ model_out=model_MLP(data)
 ```
 
 Now we have model's predictions and we above got 'true' labels from the dataset, so we can now compute the loss - CrossEntropyLoss is the apropropriate one to use here. 
-We will use `CrossEntropyLoss` from `torch.nn` - btw it is also a `Module`. [First create it, then evaluate](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/mlp_training.py#L123-126):
+We will use `CrossEntropyLoss` from `torch.nn` - btw it is also a `Module`. [First create it, then evaluate](../scripts/mlp_training.py#L123-126):
 ```python
 #Define the kind of loss
 loss_module=CrossEntropyLoss()
@@ -72,9 +72,9 @@ loss_module=CrossEntropyLoss()
 loss_tensor=loss_module(model_out,labels)
 ```
 
-Now that we've defined a model, we can [save a diagram of it to remember our architecture](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/mlp_training.py#L135). **This can also be used for different architectures later on.**
+Now that we've defined a model, we can [save a diagram of it to remember our architecture](../scripts/mlp_training.py#L135). **This can also be used for different architectures later on.**
 
-Before we calculate the gradients - let's [check what they are now](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/mlp_training.py#L141-143):
+Before we calculate the gradients - let's [check what they are now](../scripts/mlp_training.py#L141-143):
 ```python
 #Print out each parameter's gradient
 for name, param in model_MLP.named_parameters():
@@ -82,7 +82,7 @@ for name, param in model_MLP.named_parameters():
         format(name, param.grad))
 ```
 
-This doesn't look right! Don't forget we have to [actually do the backwards pass](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/mlp_training.py#L148)
+This doesn't look right! Don't forget we have to [actually do the backwards pass](../scripts/mlp_training.py#L148)
 ```python
 #Compute gradients by doing backward pass
 loss_tensor.backward()
@@ -92,7 +92,7 @@ for name, param in model_MLP.named_parameters():
         format(name, param.grad))
 ```
 
-All we have to do now is [subtract the gradient of a given parameter from the parameter tensor itself and do it for all parameters of the model](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/mlp_training.py#L159-163) - that should decrease the loss. Normally the gradient is multiplied by a learning rate parameter $\lambda$ so we don't go too far in the loss landscape
+All we have to do now is [subtract the gradient of a given parameter from the parameter tensor itself and do it for all parameters of the model](../scripts/mlp_training.py#L159-163) - that should decrease the loss. Normally the gradient is multiplied by a learning rate parameter $\lambda$ so we don't go too far in the loss landscape
 ```python
 #Define learning rate
 lr=0.0001
@@ -106,7 +106,7 @@ for param in model_MLP.parameters():
 We've now succesfully updated our model parameters by doing a backward pass! 
 
 There is a much simpler way of doing this - we can use the pytorch [optim](https://pytorch.org/docs/stable/optim.html) classes. i
-This allows us to easily use more advanced optimization options (like momentum or adaptive optimizers like [Adam](https://arxiv.org/abs/1412.6980)), [no loops over parameters needed](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/mlp_training.py#L172-185):
+This allows us to easily use more advanced optimization options (like momentum or adaptive optimizers like [Adam](https://arxiv.org/abs/1412.6980)), [no loops over parameters needed](../scripts/mlp_training.py#L172-185):
 ```python
 #Define Optimizer as SGD
 optimizer = optim.SGD(model_MLP.parameters(), lr=0.0001)

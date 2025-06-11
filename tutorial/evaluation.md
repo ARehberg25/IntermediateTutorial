@@ -14,7 +14,7 @@ This should output _-m_ as monitor-only mode, and _-l_ for the location. If you 
 python scripts/training_monitor_analysis.py -l model_state_dumps/time-date
 ```
 
-The monitoring part uses functions from [plot utils](utils/plot_utils.py). [It first runs](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/training_monitor_analysis.py#L34) 
+The monitoring part uses functions from [plot utils](utils/plot_utils.py). [It first runs](../scripts/training_monitor_analysis.py#L34) 
 ```python
 plot_utils.disp_learn_hist(loc, show=False, losslim=1, output_name="plots/training/log_training.png")
 ```
@@ -24,7 +24,7 @@ Why so bumpy?
     - there is 'noise' associated with batch-to-batch variation BUT
 The main effect is actually the real bumpiness in the loss landscape being traversed during learning
     
- To learn anything we need to smooth out the plot - for instance by [using moving average](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/training_monitor_analysis.py#L43) 
+ To learn anything we need to smooth out the plot - for instance by [using moving average](../scripts/training_monitor_analysis.py#L43) 
 ```python
 plot_utils.disp_learn_hist_smoothed(loc,window_train=200,window_val=1, output_name="plots/training/log_training.png")
 ```
@@ -34,7 +34,7 @@ What does it look like? The shape can help you decide if you're undertrained, co
 
 #### Evaluation
 
-The [following lines](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/training_monitor_analysis.py#L71-82)  setting up the engine for validation are set up for a simpleMLP, they'll need to be modified for a CNN or ResNet, which are the more advanced network you will encounter later in the tutorial:
+The [following lines](../scripts/training_monitor_analysis.py#L71-82)  setting up the engine for validation are set up for a simpleMLP, they'll need to be modified for a CNN or ResNet, which are the more advanced network you will encounter later in the tutorial:
 ```python
 #Choose which dataset to use depending on network
 #MLP
@@ -55,24 +55,24 @@ After this the engine will run validation
 engine.validate()
 ```
 
-Which outputs some _.npy_ files that we will then load:
+Which outputs some _.npy_ files that we will [then load](../scripts/training_monitor_analysis.py#L92-94):
 ```python
 labels_val=np.load(engine.dirpath + "labels.npy")
 predictions_val=np.load(engine.dirpath + "predictions.npy")
 softmax_out_val=np.load(engine.dirpath + "softmax.npy")
 ```
 
-We can then plot the softmax output (0 to 1 number, for each class, 1 is most confident that it is that class):
+We can then [plot the softmax output](../scripts/training_monitor_analysis.py#L97) (0 to 1 number, for each class, 1 is most confident that it is that class):
 ```python
 plot_utils.plot_resp(labels_val, softmax_out_val, output_name = 'plots/analysis/softmax.png')
 ```
 
-The confusion matrix
+The [confusion matrix](../scripts/training_monitor_analysis.py#L100)
 ```python
 plot_utils.plot_confusion_matrix(labels_val, predictions_val, ['$\gamma$','$e$','$\mu$'],output_name = 'plots/analysis/confusion_matrix.png')
 ```
 
-And finally the ROC curve
+And [finally the ROC curve](../scripts/training_monitor_analysis.py#L106)
 ```python
 plot_utils.plot_roc_curves(labels_val, softmax_out_val, output_path = 'plots/analysis/roc.png')
 ```

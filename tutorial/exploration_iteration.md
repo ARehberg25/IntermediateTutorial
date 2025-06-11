@@ -8,20 +8,20 @@ python scripts/data_exploration.py
 
 This will run this script tutorial-style, going through different lines print lines. We'll also go through the lines here. If you want to skip the tutorial style, you can add the option _-s_ to skip the prompts and print out everything at once.
 
-First, we will open the [.h5 file](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L24)
+First, we will open the [.h5 file](../scripts/data_exploration.py#L24)
 ```python
     f=h5py.File(filepath,"r")
 ```
 .h5 files are very performant when reading from disk, and so are widely used in ML.
 The code will open the file and print out the different keys, which are variables labelled with a name.
 
-Next, we'll look at the number of events. We [print out the shape of the 'labels' variable](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L43)
+Next, we'll look at the number of events. We [print out the shape of the 'labels' variable](../scripts/data_exploration.py#L43)
 
 ```python
 print(f"Number of events: {f['labels'].shape}")
 ```
 
-Next, investigate the shape of the PMT variables, which is the detector variables we will eventually use to train our networks. We [print out the shape of the 'event_data' variable](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L49)
+Next, investigate the shape of the PMT variables, which is the detector variables we will eventually use to train our networks. We [print out the shape of the 'event_data' variable](../scripts/data_exploration.py#L49)
 
 
 ```python
@@ -43,19 +43,19 @@ Note that the object returned by the subscript looks like an array - we can subs
 
  In fact the object is not a numpy array -it is a hdf5 `Dataset` object - the data itself lives on disk until we request it
 
-We [print out the type of the 'event_data' variable](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L69)
+We [print out the type of the 'event_data' variable](../scripts/data_exploration.py#L69)
 
 ```python
 print(f"The data type is: {type(f['event_data'])}")
 ```
 
-Next, we see the size of the dataset will make it difficult to load all at once into memory on many systems by [checkign the size of the PMT data](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L77)
+Next, we see the size of the dataset will make it difficult to load all at once into memory on many systems by [checkign the size of the PMT data](../scripts/data_exploration.py#L77)
 
 ```python
 print("Size of the bulk of the data is {:.1f} GB".format( (f['event_data'].size * 4 / (1024**3)) ))
 ```
 
-One important feature of the dataset it is uncompressed and contiguous or 'unchunked', as we can see [when we look at the chunks and compression](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L85)
+One important feature of the dataset it is uncompressed and contiguous or 'unchunked', as we can see [when we look at the chunks and compression](../scripts/data_exploration.py#L85)
 ```python
 print("dataset chunks: {} compression: {}".format(f['event_data'].chunks,f['event_data'].compression))
 ```
@@ -66,15 +66,15 @@ BUT it will take more spave on disk. In the next section we will see an example 
 #### Using Pytorch Dataset object
 
 Let's import and create a Dataset object - you are welcome to look at the [source](utils/data_handling.py) code in _utils/data\_handling.py_.
-We've added a more detailed walk-through of data handling in the [comments](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L102-164) of [data_exploration](scripts/data_exploration.py) that you can read at your leisure. Since this tutorial is more about networks than data handling, we leave it as optional.
+We've added a more detailed walk-through of data handling in the [comments](../scripts/data_exploration.py#L102-164) of [data_exploration](scripts/data_exploration.py) that you can read at your leisure. Since this tutorial is more about networks than data handling, we leave it as optional.
 
-The [data handling](utils/data_handling.py) utility has a class named _WCH5Dataset_ that we now [instantiate](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L170-171), it should have the same length as the file we were looking at earlier
+The [data handling](utils/data_handling.py) utility has a class named _WCH5Dataset_ that we now [instantiate](../scripts/data_exploration.py#L170-171), it should have the same length as the file we were looking at earlier
 ```python
 dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1)
 print(f"Length of dataset object: {len(dset)}")
 ```
 
-Next, let's [get some random event](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L179-182) and label from the training dataset, and plots an event display of this single event using [a plotting script](utils/plot_utils.py)
+Next, let's [get some random event](../scripts/data_exploration.py#L179-182) and label from the training dataset, and plots an event display of this single event using [a plotting script](utils/plot_utils.py)
 ```python
 event, label, energy=dset[dset.train_indices[1984]]
 print("Label {} and energy: {} (MeV) ".format(label,energy))
@@ -88,7 +88,7 @@ The default place to store the plots you made are in _plots/data\_exploration_, 
 
 Always try to learn as much as possible about the dataset before throwing ML at it. Let's quickly histogram the charges. 
 We won't load the full dataset but taking few thousand should be fine (since we have 12k PMTs).
-We'll [prepare the dataset](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L193-211), then finally use a plotting function (plot_pmt_var)[https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L214]
+We'll [prepare the dataset](../scripts/data_exploration.py#L193-211), then finally use a plotting function (plot_pmt_var)[https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L214]
 
 ```python
 #Using plotting functions
@@ -97,7 +97,7 @@ plot_pmt_var(charge_data_to_plot, charge_labels_to_plot, charge_colors_to_plot, 
 
 **Can you do the same for time variables, rather than charge?** You can work directly in the script (and use option _-s_ to skip tutorial mode). Hint: charge is indices 0-19 (one for each mPMT), then time is the indices after that...
 
-Let's also plot the total energy in the event and also the true particle energy. Again we'll [prepare the dataset](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L228-237), then finally use a plotting function (plot_pmt_var)[https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L239]
+Let's also plot the total energy in the event and also the true particle energy. Again we'll [prepare the dataset](../scripts/data_exploration.py#L228-237), then finally use a plotting function (plot_pmt_var)[https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_exploration.py#L239]
 
 ```python
 plot_pmt_var(sum_charge_data_to_plot, sum_charge_labels_to_plot, sum_charge_colors_to_plot, bins = sum_charge_bins,xlabel = 'PMT Energy Sum (photo electrons)', plot_path='plots/data_exploration/sum_mpmt_charge.png', do_log=False)
@@ -121,7 +121,7 @@ Here we load DataLoader from PyTorch
 from torch.utils.data import DataLoader
 ```
 
-then [define train, validation and testing DataLoaders from our dataset](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_iteration.py#L73-75)
+then [define train, validation and testing DataLoaders from our dataset](../scripts/data_exploration.py#L73-75)
 
 ```python
 train_iter=DataLoader(dset,batch_size=64,shuffle=False,sampler=SubsetRandomSampler(dset.train_indices),num_workers=2)
@@ -131,7 +131,7 @@ test_iter=DataLoader(dset,batch_size=64,shuffle=False,sampler=SubsetRandomSample
 
 You see the parameters - like batch_size and sampler - the sampler uses the indices we computed for the training, validation and testing set - if you use a sampler shuffle has to be False. On each iteration the DataLoader object will ask the dataset for a bunch of indices (calling the __getitem__ function we coded earlier) and then collate the data into a batch tensor. The collating can also be customized by providing collate_fn - but for now we will leave it with a default behavior. Did you notice the `num_workers` argument? if >0 this will enable multiprocessing - several processes will be reading examples (if supplied applying the augmentation transformation) and putting the data on queue that would be than 'consumed' by your training/evaluation process.Your 'instance' has 2 CPUs for the job so we will use that. We are beating on the same storage with all threads - so if we aren't doing much preprocessing it doesn't make sense to make this too high.
 
-Now convince yourself that the `data` and `labels` are already tensors - which we could plug into our future model - [let's iterate over first 40 batches:](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/data_iteration.py#L95-96)
+Now convince yourself that the `data` and `labels` are already tensors - which we could plug into our future model - [let's iterate over first 40 batches:](../scripts/data_exploration.py#L95-96)
 
 ```python
 num_iterations=40

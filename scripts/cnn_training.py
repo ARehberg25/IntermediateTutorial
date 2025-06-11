@@ -21,6 +21,7 @@ config.batch_size_test =512
 config.batch_size_train = 256
 config.batch_size_val = 512
 config.lr=0.01
+config.kernel_size=2
 config.device = 'gpu'
 config.gpu_number=5
 config.num_workers_train=6
@@ -30,7 +31,7 @@ config.checkpoint=False
 config.dump_path = 'model_state_dumps'
 
 
-model_CNN=SimpleCNN(num_input_channels=38,num_classes=3)
+model_CNN=SimpleCNN(config, num_input_channels=38,num_classes=3)
 
 
 

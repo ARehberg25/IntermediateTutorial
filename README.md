@@ -54,5 +54,5 @@ The sequence of the tutorial is:
   1. [Data Exploration and Iteration](tutorial/exploration_iteration.md)
   2. [Training Multi-Layer Perceptrons](tutorial/training.md)
   3. [Monitoring training and analyzing outputs](tutorial/evaluation.md)
-  4. [Training with different architecture](tutorial/training_cnn_resnet.md)
+  4. [Training with different architectures](tutorial/training_cnn_resnet.md)
   
