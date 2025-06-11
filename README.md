@@ -51,7 +51,7 @@ In general we would suggest using the VSCode IDE over ssh to go through this tut
 
 ## Notebook order in the tutorial
 The sequence of the tutorial is:
-  1. [Data Exploration and Iteration](tutorials/exploration_iteration.md)
-  1. [Training with different architectures](tutorials/training.md)
-  1. [Monitoring training and analyzing outputs](tutorials/evaluation.md)
+  1. [Data Exploration and Iteration](tutorial/exploration_iteration.md)
+  1. [Training with different architectures](tutorial/training.md)
+  1. [Monitoring training and analyzing outputs](tutorial/evaluation.md)
   
