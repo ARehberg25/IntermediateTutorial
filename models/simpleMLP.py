@@ -24,9 +24,7 @@ class SimpleMLP(nn.Module):
         # Fully-connected layers
         self.fc1 = nn.Linear(24320, 160)
         self.fc2 = nn.Linear(160, 40)
-        #self.fc3 = nn.Linear(486, 160)
-        #self.fc4 = nn.Linear(160, 40)
-        self.fc5 = nn.Linear(40, num_classes)
+        self.fc3 = nn.Linear(40, num_classes)
         
     # Forward pass
     
@@ -38,13 +36,11 @@ class SimpleMLP(nn.Module):
         # Fully-connected layers
         x = self.relu(self.fc1(x))
         x = self.relu(self.fc2(x))
-        #x = self.relu(self.fc3(x))
-        #x = self.relu(self.fc4(x))
-        x = self.fc5(x)
+        x = self.fc3(x)
         
         return x
 
-
+#Sequential model: not used in TRISEP tutorial
 class SimpleMLPSEQ(nn.Module):
     
     #Define the network layers - using a Sequential Module

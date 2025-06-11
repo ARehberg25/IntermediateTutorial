@@ -117,6 +117,7 @@ next_batch=next(iter(train_iter))
 if not args.skip_tutorial:
 
     print(f"Next batch labels: {next_batch[1]}")
+    print(f"Does next batch required gradient computation: {next_batch[0].requires_grad}. If we want to train, this would have to be set to true in order to do a backwards pass.")
     input("Press Enter to continue...")  # Waits for user input
 
 

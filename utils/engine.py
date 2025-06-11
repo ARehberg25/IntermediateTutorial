@@ -13,6 +13,7 @@ import os
 import sys
 import time
 import numpy as np
+from tqdm import tqdm
 
 from utils.data_handling import WCH5Dataset
 
@@ -257,9 +258,9 @@ class Engine:
             loss, accuracy, labels, predictions, softmaxes= [],[],[],[],[]
             
             # Extract the event data and label from the DataLoader iterator
-            for it, val_data in enumerate(self.val_dldr):
+            for it, val_data in tqdm(enumerate(self.val_dldr)):
                 
-                sys.stdout.write("val_iterations : " + str(val_iterations) + "\n")
+                #sys.stdout.write("val_iterations : " + str(val_iterations) + "\n")
                 
                 self.data, self.label = val_data[0:2]
                 

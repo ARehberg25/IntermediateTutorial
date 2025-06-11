@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from sklearn.metrics import roc_curve, auc
+from sklearn.preprocessing import label_binarize
+
 POS_MAP = [(8,4), #0
            (7,2), #1
            (6,0), #2
@@ -131,7 +134,7 @@ def tile(canvas, ul, pmts):
             
 
 
-def disp_learn_hist(location,losslim=None,show=True):
+def disp_learn_hist(location,losslim=None,show=True, output_name="plots/training/training_log.png"):
     train_log=location+'/log_train.csv'
     val_log=location+'/log_val.csv'
 
@@ -170,11 +173,11 @@ def disp_learn_hist(location,losslim=None,show=True):
         plt.show()
         return
     
-    plt.savefig("plots/training/test.png")
+    plt.savefig(output_name)
 
     return fig
     
-def disp_learn_hist_smoothed(location, losslim=None, window_train=400,window_val=40,show=True):
+def disp_learn_hist_smoothed(location, losslim=None, window_train=400,window_val=40,show=False, output_name="plots/training/training_log_smoothed.png"):
     train_log=location+'/log_train.csv'
     val_log=location+'/log_val.csv'
     
@@ -238,6 +241,8 @@ def disp_learn_hist_smoothed(location, losslim=None, window_train=400,window_val
         plt.show()
         return
 
+    plt.savefig(output_name)
+
     return fig
 
 
@@ -298,5 +303,86 @@ def plot_confusion_matrix(labels, predictions, class_names, output_path = 'plots
     plt.title("Confusion matrix", fontsize=20) 
    
     plt.savefig(output_path)
+    plt.clf()
 
+def plot_resp(labels,softmax_out,output_name="plots/analysis/softmax.png"):
+
+    fig1, ax1 = plt.subplots(figsize=(12,8),facecolor="w")
+    ax1.tick_params(axis="both", labelsize=20)
+    softmax_out_val_gamma_Pe=softmax_out[labels==0][:,1]
+    softmax_out_val_e_Pe=softmax_out[labels==1][:,1]
+    
+    bins=np.linspace(0.0,1.0,51)
+    values, bins, patches = ax1.hist(softmax_out_val_gamma_Pe, bins=bins, 
+                                    label= 'gamma', color='blue', density=True,
+                                    alpha=0.3)
+    
+    values, bins, patches = ax1.hist(softmax_out_val_e_Pe, bins=bins, 
+                                    label= 'electron', color='red', density=True,
+                                    alpha=0.3)
+    ax1.legend(prop={'size': 16})
+    ax1.set_xlabel('$P(e)$',fontweight='bold',fontsize=24,color='black')
+    
+    fig2, ax2 = plt.subplots(figsize=(12,8),facecolor="w")
+    ax2.tick_params(axis="both", labelsize=20)
+    softmax_out_val_e_Pmu=softmax_out[labels==1][:,2]
+    softmax_out_val_mu_Pmu=softmax_out[labels==2][:,2]
+    
+    values, bins, patches = ax2.hist(softmax_out_val_mu_Pmu, bins=bins, 
+                                    label= 'muon', color='green', density=True,
+                                    alpha=0.3)
+    
+    values, bins, patches = ax2.hist(softmax_out_val_e_Pmu, bins=bins, 
+                                    label= 'electron', color='red', density=True,
+                                    alpha=0.3, log=True)
+    ax2.legend(prop={'size': 16})
+    ax2.set_xlabel('$P(\mu)$',fontweight='bold',fontsize=24,color='black')
+    
+    
+    
+    plt.savefig(output_name)
+    plt.clf()
+
+
+def plot_roc_curves(labels_val, softmax_out_val, output_path = 'plots/analysis/'):
+    labels_val_e_gamma=labels_val[np.where( (labels_val==0) | (labels_val==1))]
+    softmax_out_val_e_gamma=softmax_out_val[np.where( (labels_val==0) | (labels_val==1))][:,1]
+    fpr,tpr,thr=roc_curve(labels_val_e_gamma,softmax_out_val_e_gamma)
+    roc_AUC=auc(fpr,tpr)
+    fig1, ax1 = plt.subplots(figsize=(12,8),facecolor="w")
+    ax1.tick_params(axis="both", labelsize=20)
+    ax1.plot(fpr,tpr,label=r'$e$ VS $\gamma$ ROC, AUC={:.3f}'.format(roc_AUC))
+    ax1.set_xlabel('FPR',fontweight='bold',fontsize=24,color='black')
+    ax1.set_ylabel('TPR',fontweight='bold',fontsize=24,color='black')
+    ax1.legend(loc="lower right",prop={'size': 16})
+
+    rejection=1.0/(fpr+1e-10)
+
+    fig2, ax2 = plt.subplots(figsize=(12,8),facecolor="w")
+    ax2.tick_params(axis="both", labelsize=20)
+    plt.yscale('log')
+    plt.ylim(1.0,1.0e3)
+    #plt.grid(b=True, which='major', color='gray', linestyle='-')
+    #plt.grid(b=True, which='minor', color='gray', linestyle='--')
+    ax2.plot(tpr, rejection, label=r'$e$ VS $\gamma$ ROC, AUC={:.3f}'.format(roc_AUC))
+    ax2.set_xlabel('efficiency',fontweight='bold',fontsize=24,color='black')
+    ax2.set_ylabel('Rejection',fontweight='bold',fontsize=24,color='black')
+    ax2.legend(loc="upper right",prop={'size': 16})
+
+    plt.savefig(output_path+"/roc_rej.png")
+    plt.clf()
+
+    fig2, ax2 = plt.subplots(figsize=(12,8),facecolor="w")
+    ax2.tick_params(axis="both", labelsize=20)
+    #plt.yscale('log')
+    #plt.ylim(1.0,1)
+    #plt.grid(b=True, which='major', color='gray', linestyle='-')
+    #plt.grid(b=True, which='minor', color='gray', linestyle='--')
+    ax2.plot(tpr, tpr/np.sqrt(fpr), label=r'$e$ VS $\gamma$ ROC, AUC={:.3f}'.format(roc_AUC))
+    ax2.set_xlabel('efficiency',fontweight='bold',fontsize=24,color='black')
+    ax2.set_ylabel('~significance gain',fontweight='bold',fontsize=24,color='black')
+    ax2.legend(loc="upper right",prop={'size': 16})
+
+    plt.savefig(output_path+"/roc_sig.png")
+    plt.clf()
 
