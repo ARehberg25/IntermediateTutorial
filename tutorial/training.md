@@ -149,3 +149,15 @@ nvidia-smi
 Try to change this config so that you use an un-utilized GPU. Coordinate with other teams so that you each use separate GPUs! This is not so important for a simple MLP, but for more complex models, every bit of free memory can help.
 
 Most of the configuration parameters should be related to something we've done in this tutorial already, so try to think of what they all mean!
+
+We now put together all we learned, and use the engine with the MLP model class and use its train function to abstract the loop
+```python
+#Initialize engine
+engine=Engine(model_MLP,dset,config)
+#Train!
+engine.train(epochs=1,report_interval=100,valid_interval=200)
+```
+
+Notice the arguments to the train function: **epochs** is how may times to go through the training data during training, report intervals when to report training performance, and valid interval when to run on an independent validation set to see a more valid performance of the network.
+
+Next let's learn how to [evaluate the model we just trained](../tutorial/evaluation.md).

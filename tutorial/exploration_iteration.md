@@ -150,3 +150,5 @@ Input data being arounds this range can help converge faster.
 **Are there any other pre-processing steps you could think of to do with our data?**
 
 As with the previous script, you can use the option _-s_ when lauching it to skip 'Press enter to continue'.
+
+Next let's learn how to [train a model](../tutorial/training.md).

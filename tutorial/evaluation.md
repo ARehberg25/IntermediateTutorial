@@ -71,9 +71,13 @@ The [confusion matrix](../scripts/training_monitor_analysis.py#L100)
 ```python
 plot_utils.plot_confusion_matrix(labels_val, predictions_val, ['$\gamma$','$e$','$\mu$'],output_name = 'plots/analysis/confusion_matrix.png')
 ```
+can you figure out what the matrix is telling you?
 
-And [finally the ROC curve](../scripts/training_monitor_analysis.py#L106)
+And [finally the ROC curve](../scripts/training_monitor_analysis.py#L106), specifically for electrons as signal and gammas as background.
 ```python
 plot_utils.plot_roc_curves(labels_val, softmax_out_val, output_path = 'plots/analysis/roc.png')
 ```
+ROC stands for Receiver-Operating curve, which is fancy machine learning jargon. Essentially we are plotting the true positive rate on the x-axis versus the false positive rate on the y-axis. We also make a second ROC curve, labelled **rejection**, where the y-axis is replaced with background rejection, which is simply the reciprocal of false positive rate. This is helpful to visualize small differences, and gives an intuitive understanding (rejection is basically how many backgrounds get rejected for every one that gets classified as signal)
+
+Next let's learn how to [train more advanced models](../tutorial/training_cnn_resnet.md).
 

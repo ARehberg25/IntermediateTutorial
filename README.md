@@ -21,6 +21,8 @@ mkdir hk_ml_trisep_tutorial
 cd hk_ml_trisep_tutorial
 git clone https://github.com/[your-username]/HK_ML_tutorial.git
 cd HK_ML_tutorial
+mkdir plots
+mkdir diagrams
 ```
 
 Every time, once you login, and if you've used the same directory names as above, you'll have to do
