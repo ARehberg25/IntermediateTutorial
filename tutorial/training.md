@@ -1,4 +1,4 @@
-### Training
+## Training
 
 First we'll look at a Multi-Layer Perceptron (MLP). An MLP is a very basic neutral network, with a set of fully-connected layers connecting input (PMT information) to output (class prediction).
 We'll use the script _scripts/mlp\_training.py_ to do this. By running this script and following along here, we'll manually go through training through one batch of our input data.
@@ -33,7 +33,9 @@ model_MLP.state_dict()
 Did you notice that the values are not 0? This is actually by design - by default that initialization follows an accepted scheme - but many strategies are possible
 
 
-#### Training a model
+### Training a Multi-layer Perceptron
+
+
 
 Let's [load a dataset using our WCH5Dataset class, and use a dataloader](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/mlp_training.py#L96-103)
 ```python
@@ -129,7 +131,7 @@ Here we'll use the [engine](utils/engine.py) class. Let's examine it. These are 
    3. Turning evaluation of gradients on and off.
    4. Saving and retrieving the model and optimizer state.
 
-To run an MLP training session, simply run _scripts/mlp\_training.py -s_; the _-s_ option skips past tutorial to a training with the engine. Especially note the [configuration parameters](https://github.com/felix-cormier/HK_ML_tutorial/blob/trisep_dev/scripts/mlp_training.py#L209-222). Some of these settings can be changed - feel free to play around with them! For the settings that affect the training, they are called **hyperparameters**, and finding optimal ones is called **hyperparameter tuning**. The _dump\_path_ config 
+To run an MLP training session, simply run _scripts/mlp\_training.py -s_; the _-s_ option skips past tutorial to a training with the engine. Especially note the [configuration parameters](scripts/mlp_training.py#L209-222). Some of these settings can be changed - feel free to play around with them! For the settings that affect the training, they are called **hyperparameters**, and finding optimal ones is called **hyperparameter tuning**. The _dump\_path_ config 
 
 ```python
 config.dump_path = 'model_state_dumps'
