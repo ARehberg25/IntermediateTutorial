@@ -131,7 +131,7 @@ Here we'll use the [engine](utils/engine.py) class. Let's examine it. These are 
    3. Turning evaluation of gradients on and off.
    4. Saving and retrieving the model and optimizer state.
 
-To run an MLP training session, simply run _scripts/mlp\_training.py -s_; the _-s_ option skips past tutorial to a training with the engine. Especially note the [configuration parameters](scripts/mlp_training.py#L209-222). Some of these settings can be changed - feel free to play around with them! For the settings that affect the training, they are called **hyperparameters**, and finding optimal ones is called **hyperparameter tuning**. The _dump\_path_ config 
+To run an MLP training session, simply run _scripts/mlp\_training.py -s_; the _-s_ option skips past tutorial to a training with the engine. Especially note the [configuration parameters](../scripts/mlp_training.py#L209-222). Some of these settings can be changed - feel free to play around with them! For the settings that affect the training, they are called **hyperparameters**, and finding optimal ones is called **hyperparameter tuning**. The _dump\_path_ config 
 
 ```python
 config.dump_path = 'model_state_dumps'
