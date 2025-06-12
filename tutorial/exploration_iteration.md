@@ -82,7 +82,16 @@ print("Label {} and energy: {} (MeV) ".format(label,energy))
 event_displays(event, label, plot_path='plots/data_exploration/')
 ```
 
-The default place to store the plots you made are in _plots/data\_exploration_, so you can check them there. There should be 3 different event display plots, do you understand what they all show?
+The default place to store the plots you made are in _plots/data\_exploration_, so you can check them there. You may have to make the _data\_exploration_ directory using _mkdir_, and will have to do the same for plot-making in subsequent tutorials. 
+
+To look at plots, you can navigate to them in the explorer if you are using an IDE such as VSCode. If you are using terminal, and have X11 forwarding enabled, you can use a number of plot display commands. One example is _feh_, which you would use by:
+```
+feh plots/data_exploration/all_mpmt_charge.png
+```
+
+One last option would be to use _scp_ to download your plots to your local computer to view them there.
+
+There should be 3 different event display plots, do you understand what they all show?
 
 ### Making plots of your data
 

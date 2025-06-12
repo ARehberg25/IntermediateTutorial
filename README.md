@@ -23,6 +23,7 @@ git clone https://github.com/[your-username]/HK_ML_tutorial.git
 cd HK_ML_tutorial
 mkdir plots
 mkdir diagrams
+mkdir model_state_dumps
 ```
 
 Every time, once you login, and if you've used the same directory names as above, you'll have to do
