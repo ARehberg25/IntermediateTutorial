@@ -1,6 +1,6 @@
-### Model Monitoring and evaluation
+## Model Monitoring and evaluation
 
-#### Monitoring
+### Monitoring
 
 We will use the script in _scripts/training\_monitor\_analysis.py_ to both monitor the loss and accuracy and evaluate the performance of the trained model. This script has possiblities of input arguments, namely asking to only make monitoring plots (useful while still training) and the location of the logs and model to evaluate.
 
@@ -32,7 +32,7 @@ plot_utils.disp_learn_hist_smoothed(loc,window_train=200,window_val=1, output_na
 What does it look like? The shape can help you decide if you're undertrained, converged, or overtained. What would each look like?
 
 
-#### Evaluation
+### Evaluation
 
 The [following lines](../scripts/training_monitor_analysis.py#L71-82)  setting up the engine for validation are set up for a simpleMLP, they'll need to be modified for a CNN or ResNet, which are the more advanced network you will encounter later in the tutorial:
 ```python

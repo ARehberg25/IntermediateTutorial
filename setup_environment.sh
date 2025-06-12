@@ -1,1 +1,1 @@
-apptainer exec --nv -B /run/user/${UID} -B /fast_scratch -B /fast_scratch_1 -B /fast_scratch_2 -B /home -B /data /fast_scratch/triumfmlutils/containers/container_base_ml_v3.5.3.sif /bin/bash
+apptainer exec --nv -B /run/user/${UID} -B /fast_scratch -B /fast_scratch_1 -B /fast_scratch_2 -B /home -B /data /fast_scratch/triumfmlutils/containers/container_base_ml_v3.5.5.sif /bin/bash
