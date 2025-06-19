@@ -21,7 +21,9 @@ mkdir hk_ml_trisep_tutorial
 cd hk_ml_trisep_tutorial
 git clone https://github.com/[your-username]/HK_ML_tutorial.git
 cd HK_ML_tutorial
-mkdir plots
+mkdir -p plots/data_exploration
+mkdir -p plots/training
+mkdir -p plots/analysis
 mkdir diagrams
 mkdir model_state_dumps
 ```
@@ -29,7 +31,7 @@ mkdir model_state_dumps
 Every time, once you login, and if you've used the same directory names as above, you'll have to do
 ```
 cd hk_ml_trisep_tutorial/HK_ML_tutorial
-source setup_environment.sh
+source source.me
 ```
 
 In general we would suggest using e.g. [VSCode IDE](https://code.visualstudio.com) over ssh to go through this tutorial. It also makes it much easier to view plots that you make.
