@@ -73,9 +73,9 @@ if not args.monitor_only:
 
     #Choose which dataset to use depending on network
     #MLP
-    dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1)
+    dset=WCH5Dataset("/fast_scratch_1/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1)
     #CNN or ResNet
-    #dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1,transform=rotate_chan)
+    #dset=WCH5Dataset("/fast_scratch_1/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1,transform=rotate_chan)
 
     #Modify depending on architecture
     model_MLP=SimpleMLP(num_classes=3)

@@ -70,7 +70,7 @@ We've added a more detailed walk-through of data handling in the [comments](../s
 
 The [data handling](utils/data_handling.py) utility has a class named _WCH5Dataset_ that we now [instantiate](../scripts/data_exploration.py#L170-171), it should have the same length as the file we were looking at earlier
 ```python
-dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1)
+dset=WCH5Dataset("/fast_scratch_1/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1)
 print(f"Length of dataset object: {len(dset)}")
 ```
 

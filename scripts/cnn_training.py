@@ -23,7 +23,6 @@ config.batch_size_val = 512
 config.lr=0.01
 config.kernel_size=2
 config.device = 'gpu'
-config.gpu_number=5
 config.num_workers_train=6
 config.num_workers_val=1
 config.num_workers_test=1
@@ -35,7 +34,7 @@ model_CNN=SimpleCNN(config, num_input_channels=38,num_classes=3)
 
 
 
-dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1,transform=rotate_chan)
+dset=WCH5Dataset("/fast_scratch_1/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1,transform=rotate_chan)
 
 engine=Engine(model_CNN,dset,config)
 

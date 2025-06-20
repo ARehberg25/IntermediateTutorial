@@ -87,12 +87,12 @@ if not args.skip_tutorial:
     # First let's make a dataset object
 
     try:
-        f=h5py.File("/fast_scratch/TRISEP_data/NUPRISM.h5","r")
+        f=h5py.File("/fast_scratch_1/TRISEP_data/NUPRISM.h5","r")
     except FileNotFoundError:
         print("File not Found!")
         quit()
 
-    dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",reduced_dataset_size=100000,val_split=0.1,test_split=0.1)
+    dset=WCH5Dataset("/fast_scratch_1/TRISEP_data/NUPRISM.h5",reduced_dataset_size=100000,val_split=0.1,test_split=0.1)
 
     # Let's make a dataloader and grab a first batch
     train_dldr=DataLoader(dset,
@@ -199,12 +199,12 @@ else:
     model_MLP=SimpleMLP(num_classes=3)
 
     try:
-        f=h5py.File("/fast_scratch/TRISEP_data/NUPRISM.h5","r")
+        f=h5py.File("/fast_scratch_1/TRISEP_data/NUPRISM.h5","r")
     except FileNotFoundError:
         print("File not Found!")
         quit()
 
-    dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1)
+    dset=WCH5Dataset("/fast_scratch_1/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1)
 
     #Default configuration
     class CONFIG:
@@ -215,7 +215,7 @@ else:
     config.batch_size_val = 512
     config.lr=0.00001
     config.device = 'gpu'
-    config.gpu_number=5
+    config.gpu_number=0
     config.num_workers_train=6
     config.num_workers_val=1
     config.num_workers_test=1
