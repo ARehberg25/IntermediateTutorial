@@ -8,19 +8,18 @@ It is advisable to fork this repository by clicking on a button above in top rig
 I borrowed code liberally from [code and tutorials](https://github.com/WatChMaL) developed by [Kazu Terao](https://github.com/drinkingkazu) and code by [Julian Ding](https://github.com/search?q=user%3Ajulianzding) and [Abhishek Kajal](https://github.com/search?q=user%3Aabhishekabhishek). Big thanks also to the [Water Cherenkov Machine Learning](https://github.com/WatChMaL) collaboration for lending their data - particularly [Nick Prouse](https://github.com/nickwp) for actually running the simulations and to Julian for 'massaging' the data.
 Thanks to Wojtek Fedorko for providing this code and for assistance.
 
-## Setting up on triumf-ml1
+## Setting up on triumf-ml1 or triumf-ml2
 
-To access, from a terminal
-```
-ssh -Y username@triumf-ml1.phas.ubc.ca
-```
+To access triumf-ml1 or triumf-ml2, follow the instructions to [log in to the TRIUMF ML server and launch the container as described here](https://github.com/TRISEP-2025-ML-tutorials/Intro-notebooks/blob/main/SETTING_UP.md)
 
-First time setup, if you forked fill out your GitHub username as [your-username], if not you can use felix-cormier as the username instead:
+You should fork the HyperK ML repo in [the TRISEP 2025 ML Repo](https://github.com/TRISEP-2025-ML-tutorials/Intermediate)
+
+First time setup, if you forked fill out your GitHub username as [your-username]
 ```
 mkdir hk_ml_trisep_tutorial
 cd hk_ml_trisep_tutorial
-git clone https://github.com/[your-username]/HK_ML_tutorial.git
-cd HK_ML_tutorial
+git clone https://github.com/[your-username]/Intermediate.git
+cd Intermediate
 mkdir -p plots/data_exploration
 mkdir -p plots/training
 mkdir -p plots/analysis

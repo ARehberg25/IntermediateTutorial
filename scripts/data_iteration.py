@@ -53,7 +53,7 @@ args = parser.parse_args()
 if args.skip_tutorial:
     print("Skipping tutorial style")
 
-filepath = "/fast_scratch/TRISEP_data/NUPRISM.h5"
+filepath = "/fast_scratch_1/TRISEP_data/NUPRISM.h5"
 
 #Load up the file and convert it to WCH5Dataset like in the data_exploration script 
 try:

@@ -39,7 +39,7 @@ Did you notice that the values are not 0? This is actually by design - by defaul
 
 Let's [load a dataset using our WCH5Dataset class, and use a dataloader](../scripts/mlp_training.py#L96-103)
 ```python
-    dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",reduced_dataset_size=100000,val_split=0.1,test_split=0.1)
+    dset=WCH5Dataset("/fast_scratch_1/TRISEP_data/NUPRISM.h5",reduced_dataset_size=100000,val_split=0.1,test_split=0.1)
 
     # Let's make a dataloader and grab a first batch
     train_dldr=DataLoader(dset,
@@ -138,15 +138,6 @@ config.dump_path = 'model_state_dumps'
 ```
 
 Will be where the model is saved - a directory with current date-time will be made for every new training. 
-The _gpu\_number_ parameter decides the GPU where the training occurs:
-```python
-config.gpu_number=5
-```
-On triumf-ml1 there are 8 GPUS (0-7). You can check which ares are in use by, on the command line, doing the command
-```
-nvidia-smi
-```
-Try to change this config so that you use an un-utilized GPU. Coordinate with other teams so that you each use separate GPUs! This is not so important for a simple MLP, but for more complex models, every bit of free memory can help.
 
 Most of the configuration parameters should be related to something we've done in this tutorial already, so try to think of what they all mean!
 

@@ -34,7 +34,7 @@ class Engine:
         if (config.device == 'gpu'):
             print("Requesting a GPU")
             if torch.cuda.is_available():
-                self.device = torch.device(config.gpu_number)
+                self.device = torch.device(0)
                 print(f"DEVICE: {self.device}")
                 print("CUDA is available")
             else:

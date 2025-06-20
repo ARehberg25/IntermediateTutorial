@@ -18,7 +18,7 @@ args = parser.parse_args()
 if args.skip_tutorial:
     print("Skipping tutorial style")
 
-filepath = "/fast_scratch/TRISEP_data/NUPRISM.h5"
+filepath = "/fast_scratch_1/TRISEP_data/NUPRISM.h5"
 
 try:
     f=h5py.File(filepath,"r")
@@ -167,7 +167,7 @@ sys.path.insert(0,parentdir)
 
 # Ok let's instantiate the dataset and ask it for a few examples:
 
-dset=WCH5Dataset("/fast_scratch/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1)
+dset=WCH5Dataset("/fast_scratch_1/TRISEP_data/NUPRISM.h5",val_split=0.1,test_split=0.1)
 print(f"Length of dataset object: {len(dset)}")
 
 if not args.skip_tutorial:
