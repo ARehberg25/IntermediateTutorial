@@ -12,14 +12,14 @@ Thanks to Wojtek Fedorko for providing this code and for assistance.
 
 To access triumf-ml1 or triumf-ml2, follow the instructions to [log in to the TRIUMF ML server and launch the container as described here](https://github.com/TRISEP-2025-ML-tutorials/Intro-notebooks/blob/main/SETTING_UP.md)
 
-You should fork the HyperK ML repo in [the TRISEP 2025 ML Repo](https://github.com/TRISEP-2025-ML-tutorials/Intermediate)
+You should fork the HyperK ML repo in [the TRISEP 2025 ML Repo](https://github.com/TRISEP-2025-ML-tutorials/IntermediateTutorial)
 
 First time setup, if you forked fill out your GitHub username as [your-username]
 ```
 mkdir hk_ml_trisep_tutorial
 cd hk_ml_trisep_tutorial
-git clone https://github.com/[your-username]/Intermediate.git
-cd Intermediate
+git clone https://github.com/[your-username]/IntermediateTutorial.git
+cd IntermediateTutorial
 mkdir -p plots/data_exploration
 mkdir -p plots/training
 mkdir -p plots/analysis

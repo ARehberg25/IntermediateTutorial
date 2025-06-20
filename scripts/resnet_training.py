@@ -14,6 +14,13 @@ from utils.data_utils import rotate_chan
 
 from models.resnet import resnet18, resnet34, resnet50, resnet101, resnet152
 
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-s", "--skip_tutorial", help="Run with this option just to train the MLP",
+                    action="store_true")
+args = parser.parse_args()
+
 class CONFIG:
     pass
 config=CONFIG()
@@ -33,9 +40,10 @@ dset=WCH5Dataset("/fast_scratch_1/TRISEP_data/NUPRISM.h5",val_split=0.1,test_spl
 model_resnet=resnet18(num_input_channels=38,num_classes=3)#What comes here?
 engine=Engine(model_resnet,dset,config)#What comes here?
 
-for name, param in model_resnet.named_parameters():
-    print("name of a parameter: {}, type: {}, parameter requires a gradient?: {}".
-          format(name, type(param),param.requires_grad))
+if not args.skip_tutorial:
+    for name, param in model_resnet.named_parameters():
+        print("name of a parameter: {}, type: {}, parameter requires a gradient?: {}".
+            format(name, type(param),param.requires_grad))
 
 # Train
 engine.train(epochs=1,report_interval=100,valid_interval=200)

@@ -14,6 +14,12 @@ from utils.data_utils import rotate_chan
 
 from models.simpleCNN import SimpleCNN
 
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-s", "--skip_tutorial", help="Run with this option just to train the MLP",
+                    action="store_true")
+args = parser.parse_args()
 class CONFIG:
     pass
 config=CONFIG()
@@ -38,8 +44,9 @@ dset=WCH5Dataset("/fast_scratch_1/TRISEP_data/NUPRISM.h5",val_split=0.1,test_spl
 
 engine=Engine(model_CNN,dset,config)
 
-for name, param in model_CNN.named_parameters():
-    print("name of a parameter: {}, type: {}, parameter requires a gradient?: {}".
-          format(name, type(param),param.requires_grad))
+if not args.skip_tutorial:
+    for name, param in model_CNN.named_parameters():
+        print("name of a parameter: {}, type: {}, parameter requires a gradient?: {}".
+            format(name, type(param),param.requires_grad))
 
 engine.train(epochs=1,report_interval=100,valid_interval=200)

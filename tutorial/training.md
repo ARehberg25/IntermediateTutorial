@@ -3,6 +3,14 @@
 First we'll look at a Multi-Layer Perceptron (MLP). An MLP is a very basic neutral network, with a set of fully-connected layers connecting input (PMT information) to output (class prediction).
 We'll use the script _scripts/mlp\_training.py_ to do this. By running this script and following along here, we'll manually go through training through one batch of our input data.
 
+You can run the script by running
+```
+python scripts/mlp_training.py
+```
+
+Firs time running, the script will pause, so you can follow along here (similar to previous). Add the option _-s_ to just run training.
+
+
 This script load the class [SimpleMLP](models/simpleMLP.py), which I encourage you to peruse. [We load this class](../scripts/mlp_training.py#L49)
 
 ```python
