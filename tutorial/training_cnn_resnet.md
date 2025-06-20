@@ -11,6 +11,8 @@ As usual, you can run the script with the following command from the repo
 python scripts/cnn_training.py
 ```
 
+The first time, it will print out some parameters, similar to previously. Simply add the option _-s_ to skip that.
+
 You can now run evaluation on this trained network. You'll have to modify the evaluation script we ran previously to accept the CNN rather than MLP. Some of the work is done already (but commented out), but the rest we leave up to you.
 
 ### ResNet
@@ -24,13 +26,17 @@ As usual, you can run the script with the following command from the repo
 python scripts/resnet_training.py
 ```
 
+The first time, it will print out some parameters, similar to previously. Simply add the option _-s_ to skip that.
+
+### Next Steps
+
 You can now run evaluation on this trained network. You'll have to modify the evaluation script we ran previously to accept the CNN rather than MLP. Some of the work is done already (but commented out), but the rest we leave up to you.
 
 From here on out the tutorial ends. You can use the tools given to investigate different ways to train networks to classify IWCD data. 
 
 Here are some proposed ways to go deeper in this tutorial:
 
-- Compare the base performance of the three architectures
+- Compare the base performance of the three architectures, training for more epochs until the monitored performance starts to be stable
 - Modify hyperparameters: both those explicitly stated in config, and any others you can find in the individual network code
 - Add pre-processing to the input charge and/or time to make it easier for the network to learn
 - Add more in-depth evaluation. For example, does your classifier have a momentum dependence?
