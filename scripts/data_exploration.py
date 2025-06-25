@@ -219,6 +219,23 @@ if not args.skip_tutorial:
 
 # Now plot the time histogram -notice anything strange?
 # Hint charge is indices 0-19 (one for each mPMT), then time is the indices after that...
+print("Plotting time information")
+
+time_pmt_idx_min = 20
+time_pmt_idx_max = 30
+
+time_photon = data_to_plot_events[np.where(data_to_plot_labels==0)][:,:,:,time_pmt_idx_min:time_pmt_idx_max].flatten()
+time_electron = data_to_plot_events[np.where(data_to_plot_labels==1)][:,:,:,time_pmt_idx_min:time_pmt_idx_max].flatten()
+time_muon = data_to_plot_events[np.where(data_to_plot_labels==2)][:,:,:,time_pmt_idx_min:time_pmt_idx_max].flatten()
+
+time_data_to_plot = [time_photon, time_electron, time_muon]
+time_labels_to_plot = ['Photon', 'Electron', 'Muon']
+time_colors_to_plot = ['blue', 'red', 'green']
+
+time_bins=np.linspace(0.0,2000,51)
+
+#Using plotting functions
+plot_pmt_var(time_data_to_plot, time_labels_to_plot, time_colors_to_plot, bins = time_bins, xlabel = 'PMT time (photo electrons)', plot_path='plots/data_exploration/all_mpmt_time.png', do_log=True)
 
 
 print("Plotting energy information")

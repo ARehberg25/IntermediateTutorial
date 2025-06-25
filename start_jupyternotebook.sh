@@ -21,4 +21,4 @@ echo "**    FOLLOW THE INSTRUCTIONS BELOW TO SET UP AN SSH TUNNEL      **"
 echo "_________________________________________________________________________"
 echo ""
 
-python print_instructions.py 
+python3 print_instructions.py 
