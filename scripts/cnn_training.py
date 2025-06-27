@@ -17,7 +17,7 @@ from models.simpleCNN import SimpleCNN
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-s", "--skip_tutorial", help="Run with this option just to train the MLP",
+parser.add_argument("-s", "--skip_tutorial", help="Run with this option just to train the CNN",
                     action="store_true")
 args = parser.parse_args()
 class CONFIG:
@@ -49,4 +49,4 @@ if not args.skip_tutorial:
         print("name of a parameter: {}, type: {}, parameter requires a gradient?: {}".
             format(name, type(param),param.requires_grad))
 
-engine.train(epochs=1,report_interval=100,valid_interval=200)
+engine.train(epochs=3,report_interval=100,valid_interval=200)

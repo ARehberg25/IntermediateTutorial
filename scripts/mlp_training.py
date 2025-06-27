@@ -225,7 +225,7 @@ else:
     #Initialize engine
     engine=Engine(model_MLP,dset,config)
     #Train!
-    engine.train(epochs=1,report_interval=100,valid_interval=200)
+    engine.train(epochs=3,report_interval=100,valid_interval=200)
 
 
 
